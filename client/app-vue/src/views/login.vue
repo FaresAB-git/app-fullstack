@@ -28,10 +28,11 @@ const login = async () => {
       throw new Error(data.message || 'Erreur de connexion')
     }
 
-   
     successMessage.value = 'Connexion réussie !'
   } catch (error) {
+    console.error(error)
     errorMessage.value = error.message
+
   }
 }
 </script>

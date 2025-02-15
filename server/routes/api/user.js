@@ -51,21 +51,21 @@ router.post('/login', async (req, res) => {
                     // );
 
                     // Réponse avec le token
-                    res.status(200).send('User Connected');
+                    res.status(200).json({ message: 'User Connected' });
 
                 }
                 else {
                     //Mot de passe different, code erreur 400 
-                    res.status(400).send('Invalid password '+hashedPassword+' 6666 '+user.password);
+                    res.status(400).json({message : 'Invalid password '+hashedPassword+' 6666 '+user.password});
                 }
             }
             else {
                 //Utilisateur non trouvé
-                res.status(400).send('Invalid user');
+                res.status(400).json({ message: 'Invalid user' });
             }
         })
     } catch (err) {
-        res.status(500).send('Erreur serveur');
+        res.status(500).json({ message: 'Error server' });
     }
 });
 
