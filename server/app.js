@@ -2,10 +2,9 @@ require('dotenv').config();
 const express = require('express'); // Framework pour créer le serveur
 const mongoose = require('mongoose'); // ORM pour MongoDB
 const path = require('path'); // Module pour manipuler les chemins des fichiers
-const UserRoutes = require('./routes/api/user');
+const UserRoutes = require('./routes/api/userRouter');
 const User = require('./models/User');
 const cors = require('cors');
-
 
 // Création de l'application Express
 const app = express();
