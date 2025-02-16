@@ -2,8 +2,8 @@ require('dotenv').config();
 const express = require('express'); // Framework pour créer le serveur
 const mongoose = require('mongoose'); // ORM pour MongoDB
 const path = require('path'); // Module pour manipuler les chemins des fichiers
-const UserRoutes = require('./routes/api/userRouter');
-const User = require('./models/User');
+const UserRoutes = require('./routes/api/user-routes');
+const ProjectRoutes = require('./routes/api/project-routes');
 const cors = require('cors');
 
 // Création de l'application Express
@@ -26,7 +26,9 @@ async function connectDB() {
 
 connectDB();
 
-app.use('/api/user', UserRoutes )
+// Définition des routes
+app.use('/api/user', UserRoutes);
+app.use('/api/project', ProjectRoutes);
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Server running on port ${process.env.PORT || 3000}`);

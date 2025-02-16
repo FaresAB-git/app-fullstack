@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose')
-const { User } = require('user')
+const { User } = require('./User')
 
 
 const ProjectSchema = new Schema({
@@ -16,7 +16,12 @@ const ProjectSchema = new Schema({
         required: true
     },
     owner: {
-        type: User,
+        type: Schema.Types.ObjectId,
+        ref: 'User', 
         required: true
     }
 })
+
+const Project = model('project', ProjectSchema)
+
+module.exports = {Project}

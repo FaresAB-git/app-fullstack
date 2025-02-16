@@ -1,5 +1,3 @@
-const express = require('express');
-const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {User} = require('../models/User');
@@ -53,6 +51,7 @@ const loginUser = async (req, res) => {
     }
 };
 
+// Get user profile by token
 const getUser = async (req, res) => {
     try {
         const user = await User.findOne({ email: req.user.email }).select('-password');
@@ -65,9 +64,41 @@ const getUser = async (req, res) => {
     }
 };
 
+// Update user profile
+const updateUser = async (req, res) => {
+    try {
+        const { username, email } = req.body;
+        const user = await User.findOneAndUpdate(
+            { email: req.user.email },
+            { username, email },
+            { new: true, runValidators: true }
+        ).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        return res.status(200).json(user);
+    } catch (err) {
+        return res.status(500).json({ message: "Erreur serveur", error: err.message });
+    }
+};
+
+// Delete user profile
+const deleteUser = async (req, res) => {
+    try {
+        const user = await User.findOneAndDelete({ email: req.user.email });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        return res.status(200).json({ message: "User deleted successfully" });
+    } catch (err) {
+        return res.status(500).json({ message: "Erreur serveur", error: err.message });
+    }
+};
 
 module.exports = {
     registerUser,
     loginUser,
-    getUser
+    getUser,
+    updateUser,
+    deleteUser
 };
