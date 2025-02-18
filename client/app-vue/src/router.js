@@ -3,11 +3,13 @@ import App from './App.vue';
 import homePage from './views/homePage.vue';
 import login from './views/login.vue'; // Import de la nouvelle page
 import register from './views/register.vue';
+import task from './views/task.vue';
 
 const routes = [
   { path: '/', component: homePage, meta: {requiresAuth: true} },      // Page principale
   { path: '/login', component: login }, // Nouvelle page
-  { path: '/register', component: register }
+  { path: '/register', component: register },
+  { path: '/task', component: task, meta: {requiresAuth: true} }
 ];
 
 const router = createRouter({

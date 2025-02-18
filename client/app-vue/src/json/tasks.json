@@ -1,0 +1,57 @@
+[
+    {
+      "title": "Créer la maquette du site",
+      "description": "Réaliser une maquette interactive pour le projet.",
+      "dateCreation": "2024-02-18T10:00:00.000Z",
+      "author": {
+        "id": "user_123",
+        "name": "Jean Dupont"
+      },
+      "editer": null,
+      "dateModification": null,
+      "project": {
+        "id": "project_456",
+        "name": "Plateforme de gestion de tâches"
+      },
+      "status": "To Do"
+    },
+    {
+      "title": "Développer l'authentification",
+      "description": "Mettre en place le système d'authentification avec JWT.",
+      "dateCreation": "2024-02-18T11:30:00.000Z",
+      "author": {
+        "id": "user_789",
+        "name": "Alice Martin"
+      },
+      "editer": {
+        "id": "user_123",
+        "name": "Jean Dupont"
+      },
+      "dateModification": "2024-02-19T08:15:00.000Z",
+      "project": {
+        "id": "project_456",
+        "name": "Plateforme de gestion de tâches"
+      },
+      "status": "In Progress"
+    },
+    {
+      "title": "Tester le backend",
+      "description": "Réaliser des tests unitaires et d'intégration.",
+      "dateCreation": "2024-02-17T14:20:00.000Z",
+      "author": {
+        "id": "user_456",
+        "name": "Mohamed Ali"
+      },
+      "editer": {
+        "id": "user_789",
+        "name": "Alice Martin"
+      },
+      "dateModification": "2024-02-18T15:45:00.000Z",
+      "project": {
+        "id": "project_456",
+        "name": "Plateforme de gestion de tâches"
+      },
+      "status": "Done"
+    }
+  ]
+  
