@@ -64,8 +64,8 @@ const createProject = async (req, res) => {
         const newProject = await project.save();
         //If succeed, add the relationship between the project and user in ProjectUser
         const projectUser = new ProjectUser({
-            project: newProject._id,
-            user: owner
+            Project: newProject._id,
+            User: owner
         });
         await projectUser.save();
         return res.status(201).json(newProject);
