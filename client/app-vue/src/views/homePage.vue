@@ -1,9 +1,18 @@
 <script setup>
 import { ref } from "vue";
+import { getUser }  from "@/services/auth";
+import { onMounted } from "vue";
 import projectsData from "@/json/projects.json";
 import ProjectCard from "@/components/projectCard.vue";
 
 const projects = ref(projectsData);
+const userData = ref(null);
+
+onMounted(async () => {
+  userData.value = await getUser();
+  console.log(userData.value);
+});
+
 </script>
 
 <template>
