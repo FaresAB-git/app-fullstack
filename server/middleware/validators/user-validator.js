@@ -33,4 +33,15 @@ const validateLoginMiddleware = (req, res, next) => {
 };
 
 
-module.exports = { validateRegisterMiddleware, validateLoginMiddleware }
+const validateUserId = (req, res, next) => {
+    const { UserId } = req.params;
+    if (!UserId) {
+        return res.status(400).json({ message: "User ID is required" });
+    }
+    if (!UserId.match(/^[0-9a-fA-F]{24}$/)) {
+        return res.status(400).json({ message: "Invalid User ID" });
+    }
+    next();
+}
+
+module.exports = { validateRegisterMiddleware, validateLoginMiddleware, validateUserId }

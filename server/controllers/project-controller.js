@@ -1,11 +1,22 @@
 const { date } = require('joi');
 const {Project} = require('../models/Project');
 const { User } = require('../models/User');
+const { get } = require('mongoose');
 
 // Get all projects
 const getAllProjects = async (req, res) => {
     try {
         const projects = await Project.find();
+        return res.status(200).json(projects);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+// Get all projects by user ID
+const getProjectsByUserId = async (req, res) => {
+    try {
+        const projects = await Project.find({ owner: req.params.UserId });
         return res.status(200).json(projects);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -84,6 +95,7 @@ const deleteProject = async (req, res) => {
 
 module.exports = {
     getAllProjects,
+    getProjectsByUserId,
     getProjectById,
     createProject,
     updateProject,
