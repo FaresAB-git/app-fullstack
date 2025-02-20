@@ -33,5 +33,15 @@ const TaskSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Project', 
         required: false
+    },
+    status: {
+        type: String,
+        required: true
     }
 })
+
+
+
+const Task = model('task', TaskSchema)
+
+module.exports = {Task}

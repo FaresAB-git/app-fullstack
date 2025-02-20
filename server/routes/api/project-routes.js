@@ -11,18 +11,18 @@ const router = express.Router();
 router.get('/',auth, projectController.getAllProjects);
 
 // Route GET /api/projects/user/UserID
-router.get('/user/:UserId', auth, validateUserId, projectController.getProjectsByUserId);
+router.get('/user/:userId', auth, validateUserId, projectController.getProjectsByUserId);
 
 // Route GET /api/projects/:id
-router.get('/:id',auth,validateProjectId, projectController.getProjectById);
+router.get('/:projectId',auth,validateProjectId, projectController.getProjectById);
 
 // Route POST /api/projects
 router.post('/', auth,validateProject, projectController.createProject);
 
 // Route PUT /api/projects/:id
-router.put('/:id',auth,validateProjectId, projectController.updateProject);
+router.put('/:projectId',auth,validateProjectId, projectController.updateProject);
 
 // Route DELETE /api/projects/:id
-router.delete('/:id',auth,validateProjectId, projectController.deleteProject);
+router.delete('/:projectId',auth,validateProjectId, projectController.deleteProject);
 
 module.exports = router;
