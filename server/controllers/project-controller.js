@@ -1,7 +1,6 @@
-const { date } = require('joi');
 const {Project} = require('../models/Project');
 const { User } = require('../models/User');
-const { get } = require('mongoose');
+const { ProjectUser } = require('../models/ProjectUser');
 
 // Get all projects
 const getAllProjects = async (req, res) => {
@@ -13,10 +12,12 @@ const getAllProjects = async (req, res) => {
     }
 };
 
-// Get all projects by user ID
+// Get all projects by user ID using the ProjectUser model
 const getProjectsByUserId = async (req, res) => {
     try {
-        const projects = await Project.find({ owner: req.params.UserId });
+        //ProjectsId contains the projects ID where the user is a member
+        const projectsId = await ProjectUser.find({ user: req.params.userId });
+        const projects = await Project.find({ _id: { $in: projectsId.map(project => project.project) } });
         return res.status(200).json(projects);
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -39,11 +40,19 @@ const getProjectById = async (req, res) => {
 // Create a new project
 const createProject = async (req, res) => {
     const { title, description, owner } = req.body;
+    //Check if owner exists
     const user = await User.findById(owner);
     if (!user) {
         return res.status(404).json({ message: 'Owner not found' });
     }
 
+    //Check if project already exists
+    const projectExists = await Project.findOne({ title, owner });
+    if (projectExists) {
+        return res.status(400).json({ message: 'Project already exists' })};
+
+
+    //Create a new project
     const project = new Project({
         title,
         description,
@@ -53,6 +62,12 @@ const createProject = async (req, res) => {
 
     try {
         const newProject = await project.save();
+        //If succeed, add the relationship between the project and user in ProjectUser
+        const projectUser = new ProjectUser({
+            project: newProject._id,
+            user: owner
+        });
+        await projectUser.save();
         return res.status(201).json(newProject);
     } catch (error) {
         return res.status(400).json({ message: error.message });

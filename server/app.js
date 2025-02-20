@@ -4,6 +4,7 @@ const mongoose = require('mongoose'); // ORM pour MongoDB
 const path = require('path'); // Module pour manipuler les chemins des fichiers
 const UserRoutes = require('./routes/api/user-routes');
 const ProjectRoutes = require('./routes/api/project-routes');
+const TaskRoutes = require('./routes/api/task-routes');
 const cors = require('cors');
 
 // Création de l'application Express
@@ -29,6 +30,7 @@ connectDB();
 // Définition des routes
 app.use('/api/user', UserRoutes);
 app.use('/api/project', ProjectRoutes);
+app.use('/api/tasks', TaskRoutes);
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Server running on port ${process.env.PORT || 3000}`);
