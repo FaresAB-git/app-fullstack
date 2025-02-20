@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
-const { User } = require('user')
-const { Project } = require('project')
+const { User } = require('./User')
+const { Project } = require('./Project')
 
 const TaskSchema = new Schema({
     title: {
@@ -15,20 +15,23 @@ const TaskSchema = new Schema({
         type: Date,
         required: true
     },
-    author:       {
-        type: User,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User', 
         required: true
     },
-    editer:    {
-        type: User,
+    editer: {
+        type: Schema.Types.ObjectId,
+        ref: 'User', 
         required: false
     },
     dateModification:  {
         type: Date,
         required: false
     },
-    project:  {
-        type: Project,
-        required: true
+    project: {
+        type: Schema.Types.ObjectId,
+        ref: 'Project', 
+        required: false
     }
 })
