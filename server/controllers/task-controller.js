@@ -63,10 +63,17 @@ const updateTask = async (req, res) => {
 
     try {
         const task = await Task.findById(req.params.id);
-
         if (!task) {
             return res.status(404).send();
         }
+        //Search if the editer exists
+        if(req.body.editer){
+            const user = await User.findById(req.body.editer);
+        }
+        if (!user) {
+            return res.status(404).send({ error: 'Editer not found' });
+        }
+        req.body.dateModification = new Date();
 
         updates.forEach((update) => task[update] = req.body[update]);
         await task.save();

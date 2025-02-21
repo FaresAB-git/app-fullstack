@@ -14,6 +14,7 @@ const getAllProjects = async (req, res) => {
 
 // Get all projects by user ID using the ProjectUser model
 const getProjectsByUserId = async (req, res) => {
+
     try {
         //ProjectsId contains the projects ID where the user is a member
         const projectsId = await ProjectUser.find({ user: req.params.userId });
@@ -64,8 +65,8 @@ const createProject = async (req, res) => {
         const newProject = await project.save();
         //If succeed, add the relationship between the project and user in ProjectUser
         const projectUser = new ProjectUser({
-            Project: newProject._id,
-            User: owner
+            project: newProject._id,
+            user: owner
         });
         await projectUser.save();
         return res.status(201).json(newProject);

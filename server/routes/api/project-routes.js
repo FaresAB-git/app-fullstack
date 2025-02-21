@@ -10,7 +10,7 @@ const router = express.Router();
 // Route GET /api/projects
 router.get('/',auth, projectController.getAllProjects);
 
-// Route GET /api/projects/user/UserID
+// Route GET /api/projects/user/:userId
 router.get('/user/:userId', auth, validateUserId, projectController.getProjectsByUserId);
 
 // Route GET /api/projects/:id
@@ -18,6 +18,7 @@ router.get('/:projectId',auth,validateProjectId, projectController.getProjectByI
 
 // Route POST /api/projects
 router.post('/', auth,validateProject, projectController.createProject);
+
 
 // Route PUT /api/projects/:id
 router.put('/:projectId',auth,validateProjectId, projectController.updateProject);

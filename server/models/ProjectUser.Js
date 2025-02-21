@@ -3,12 +3,12 @@ const { User } = require('./User')
 const { Project } = require('./Project')
 
 const ProjectUserSchema = new Schema({
-    Project: {
+    project: {
         type: Schema.Types.ObjectId,
         ref: 'Project', 
         required: true
     },    
-    User: {
+    user: {
         type: Schema.Types.ObjectId,
         ref: 'User', 
         required: true
