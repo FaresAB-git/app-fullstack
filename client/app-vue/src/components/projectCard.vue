@@ -1,15 +1,19 @@
 <script setup>
-defineProps({
-  project: Object
+const props = defineProps({
+  projectProps: Object
 });
+
+console.log(props.projectProps);
 </script>
 
 <template>
   <div class="card">
-    <h2>{{ project.title }}</h2>
-    <p><strong>Créateur :</strong> {{ project.owner.username }}</p>
-    <p><strong>Description :</strong> {{ project.description }}</p>
-    <p><strong>Date de création :</strong> {{ new Date(project.dateCreation).toLocaleDateString() }}</p>
+    <router-link :to="{ name:'task', params: { projectId: projectProps._id } }">
+      <h2>{{ projectProps.title }}</h2>
+    </router-link>
+    <p><strong>Créateur :</strong> {{ projectProps.owner }}</p>
+    <p><strong>Description :</strong> {{ projectProps.description }}</p>
+    <p><strong>Date de création :</strong> {{ projectProps.dateCreation }}</p>
   </div>
 </template>
 
