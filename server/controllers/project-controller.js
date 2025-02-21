@@ -75,6 +75,26 @@ const createProject = async (req, res) => {
     }
 };
 
+const addUserToProject = async (req, res) => {
+    const { userId, projectId } = req.body;
+    const user = await User.findById(userId);
+    const project = await Project.findById(projectId);
+    if (!user || !project) {
+        return res.status(404).json({ message: 'User or project not found' });
+    }
+    //On cree le lien dans ProjectUser
+    const projectUser = new ProjectUser({
+        project: projectId,
+        user: userId
+    });
+    try {
+        await projectUser.save();
+        return res.status(201).json(projectUser);
+    } catch (error) {
+        return res.status(400).json({ message: error.message });
+    }
+};
+
 // Update an existing project
 const updateProject = async (req, res) => {
     try {
