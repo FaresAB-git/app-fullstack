@@ -42,6 +42,9 @@ const createTask = async (req, res) => {
         return res.status(400).send({ error: 'Project already exists' });
     }
     try {
+        if (!req.body.dateCreation) {
+            req.body.dateCreation = new Date();
+        }
         const task = new Task(req.body);
         task.status= 'taskRequested'
         await task.save();
