@@ -7,7 +7,7 @@ import ProjectCard from "@/components/projectCard.vue";
 import newProjectForm from "@/components/newProjectForm.vue";
 
 const projects = ref(projectsData);
-const userProject = ref(null);
+const userProject = ref([]);
 const userData = ref(null);
 const showForm = ref(false);
 
@@ -30,7 +30,7 @@ function toggleForm() {
   <button class="newBtn" @click="toggleForm">New project</button>
 
   <div class="projects-container">
-    <ProjectCard v-for="project in projects" :key="project.title" :project="project" />
+    <ProjectCard v-for="project in userProject" :key="project._id" :projectProps="project" />
   </div>
 
   

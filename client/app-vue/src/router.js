@@ -4,12 +4,11 @@ import homePage from './views/homePage.vue';
 import login from './views/login.vue'; // Import de la nouvelle page
 import register from './views/register.vue';
 import task from './views/task.vue';
-
 const routes = [
   { path: '/', component: homePage, meta: {requiresAuth: true} },      // Page principale
   { path: '/login', component: login }, // Nouvelle page
   { path: '/register', component: register },
-  { path: '/task', component: task, meta: {requiresAuth: true} }
+  { name: "task", component: task, path: '/task/:projectId', meta: {requiresAuth: true} } // Ajout de l'id projet en paramètre
 ];
 
 const router = createRouter({

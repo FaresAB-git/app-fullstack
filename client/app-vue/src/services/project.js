@@ -23,19 +23,21 @@ export const getProjectByUser = async () => {
 export const createProject = async (title, description) => {
   
   const token = localStorage.getItem('token');
-  const userId = localStorage.getItem('userId');
-  
-  const response = await fetch('http://localhost:3000/api/projects/' + userId, {
+  const userId =  localStorage.getItem('userId');
+  console.log(userId);
+  console.log(title);
+
+  const response = await fetch('http://localhost:3000/api/project', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
-    body:{
+    body:JSON.stringify({
       'title': title,
       'description': description,
-      'owner': userId._id
-    }
+      'owner': userId
+    })
 
   });
 
