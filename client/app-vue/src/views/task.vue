@@ -1,6 +1,27 @@
 <script setup>
 import tasksData from "@/json/tasks.json";
+import { getTask } from "@/services/task";
 import { ref, computed } from "vue";
+import { onMounted } from "vue";
+import NewTaskForm from "@/components/newTaskForm.vue";
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
+
+const showForm = ref(false);
+const projectTasks = ref([]);
+const projectId = route.params.projectId; 
+
+function toggleForm() {
+  showForm.value = !showForm.value;
+}
+
+onMounted(async () => {
+
+  projectTasks.value = await getTask(projectId);
+  console.log(projectTasks.value);
+});
 
 const tasks = ref(tasksData);
 
@@ -12,6 +33,8 @@ const tasksDone = computed(() => tasks.value.filter(task => task.status === "Don
 
 <template>
     <h1>Task Board</h1>
+    <button @click="toggleForm" class="newTaskBtn">New Task</button>
+    <NewTaskForm v-if="showForm" />
     <div id="container">
         <div id="taskRequested"> 
             <h2>To Do</h2>
@@ -69,5 +92,16 @@ const tasksDone = computed(() => tasks.value.filter(task => task.status === "Don
     background-color: orange;
     border-radius: 5px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.newTaskBtn {
+  margin-left: 50px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 8px;
+  background-color: lightblue;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 </style>

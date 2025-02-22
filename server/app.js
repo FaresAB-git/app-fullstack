@@ -3,7 +3,7 @@ const express = require('express'); // Framework pour créer le serveur
 const mongoose = require('mongoose'); // ORM pour MongoDB
 const cors = require('cors'); // Module pour gérer les permissions CORS
 const http = require('http'); // Module HTTP pour créer le serveur
-const { Server } = require('socket.io'); // Importation de socket.io
+//const { Server } = require('socket.io'); // Importation de socket.io
 
 // Importation des routes
 const UserRoutes = require('./routes/api/user-routes');
@@ -15,12 +15,12 @@ const app = express();
 const server = http.createServer(app); 
 
 // Configuration de Socket.io
-const io = new Server(server, {
-    cors: {
-        origin: "*", 
-        methods: ["GET", "POST"]
-    }
-});
+//const io = new Server(server, {
+//    cors: {
+//        origin: "*", 
+//        methods: ["GET", "POST"]
+//    }
+//});
 
 app.use(express.json());
 app.use(cors());

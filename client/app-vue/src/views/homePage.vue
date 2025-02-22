@@ -2,11 +2,10 @@
 import { ref, onMounted } from "vue";
 import { getUser } from "@/services/auth";
 import { getProjectByUser } from "@/services/project";
-import projectsData from "@/json/projects.json";
 import ProjectCard from "@/components/projectCard.vue";
 import newProjectForm from "@/components/newProjectForm.vue";
 
-const projects = ref(projectsData);
+
 const userProject = ref([]);
 const userData = ref(null);
 const showForm = ref(false);
