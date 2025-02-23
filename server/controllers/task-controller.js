@@ -39,7 +39,7 @@ const createTask = async (req, res) => {
     //Check if the project already exists (same title and project)
     const project = await Task.findOne({ title: req.body.title, project: req.body.project });
     if (project) {
-        return res.status(400).send({ error: 'Project already exists' });
+        return res.status(400).send({ error: 'Task already exists' });
     }
     try {
         if (!req.body.dateCreation) {
@@ -65,16 +65,21 @@ const updateTask = async (req, res) => {
     }
 
     try {
-        const task = await Task.findById(req.params.id);
+        const task = await Task.findById(req.params.taskId);
         if (!task) {
-            return res.status(404).send();
+            return res.status(404).send(error);
+        }
+        if (!req.body.editer) {
+            return res.status(400).send({ error: 'Editer not found' });
         }
         //Search if the editer exists
+        let user;
         if(req.body.editer){
-            const user = await User.findById(req.body.editer);
-        }
-        if (!user) {
-            return res.status(404).send({ error: 'Editer not found' });
+            user = await User.findById(req.body.editer);
+            if (!user) {
+                return res.status(404).send({ error: 'Editer not found' });
+            }
+            task[editer] = user;
         }
         req.body.dateModification = new Date();
 
