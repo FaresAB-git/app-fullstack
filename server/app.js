@@ -14,12 +14,12 @@ const TaskRoutes = require('./routes/api/task-routes');
 const app = express();
 const server = http.createServer(app); 
 
-// Configuration de Socket.io
+//Configuration de Socket.io
 const io = new Server(server, {
-    cors: {
-        origin: "*", 
-        methods: ["GET", "POST"]
-    }
+   cors: {
+       origin: "*", 
+       methods: ["GET", "POST"]
+   }
 });
 
 app.use(express.json());
