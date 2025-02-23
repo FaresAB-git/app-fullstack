@@ -1,4 +1,5 @@
 const {Task} = require('../models/Task');
+const {User} = require('../models/User');
 
 // Get task by Project ID
 const getAllTasksByProjectId = async (req, res) => {
@@ -69,9 +70,11 @@ const updateTask = async (req, res) => {
         if (!task) {
             return res.status(404).send(error);
         }
+
         if (!req.body.editer) {
             return res.status(400).send({ error: 'Editer not found' });
         }
+
         //Search if the editer exists
         let user;
         if(req.body.editer){
@@ -79,8 +82,8 @@ const updateTask = async (req, res) => {
             if (!user) {
                 return res.status(404).send({ error: 'Editer not found' });
             }
-            task[editer] = user;
         }
+        
         req.body.dateModification = new Date();
 
         updates.forEach((update) => task[update] = req.body[update]);
