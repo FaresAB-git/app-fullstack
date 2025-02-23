@@ -21,7 +21,7 @@ export const getTask = async (projectId) => {
   };
 
 
-//à faire
+
 export const createTask = async (title, description, project) => {
 
 const token = localStorage.getItem('token');
@@ -54,3 +54,34 @@ if (!response.ok) {
 
 return data;
 };
+
+
+export const updateTask = async (title, description, project, status, taskId) => {
+
+  const token = localStorage.getItem('token');
+  const userId =  localStorage.getItem('userId');
+  console.log(userId);
+  console.log(title);
+  
+  const response = await fetch('http://localhost:3000/api/tasks/' + taskId, {
+      method: 'PUT',
+      headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      },
+      body:JSON.stringify({
+        "status": status,
+        
+    }
+    )
+  
+  });
+  
+  const data = await response.json();
+  
+  if (!response.ok) {
+      throw new Error(data.message || 'Erreur de connexion');
+  }
+  
+  return data;
+  };
