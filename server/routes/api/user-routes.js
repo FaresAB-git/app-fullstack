@@ -15,4 +15,17 @@ router.post('/login', validateLoginMiddleware,UserController.loginUser);
 // Route GET /api/user/me
 router.get('/me', auth, UserController.getUser);
 
+// Route DELETE /api/user/me
+router.delete('/me', auth, UserController.deleteUser);
+
+// Route PUT /api/user/me
+router.put('/me', auth, UserController.updateUser);
+
+// Route GET /api/user
+router.get('/', auth, UserController.getUsers);
+
+// Route GET /api/user/:id
+router.get('/:userId', auth, UserController.getUserById);
+
+
 module.exports = router

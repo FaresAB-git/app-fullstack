@@ -95,10 +95,35 @@ const deleteUser = async (req, res) => {
     }
 };
 
+// get all users
+const getUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        return res.status(200).json(users);
+    } catch (err) {
+        return res.status(500).json({ message: "Erreur serveur", error: err.message });
+    }
+};
+
+// get user by id
+const getUserById = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        return res.status(200).json(user);
+    } catch (err) {
+        return res.status(500).json({ message: "Erreur serveur", error: err.message });
+    }
+};
+
 module.exports = {
     registerUser,
     loginUser,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getUsers,
+    getUserById
 };
