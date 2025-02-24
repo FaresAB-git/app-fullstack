@@ -19,6 +19,8 @@ router.get('/:projectId',auth,validateProjectId, projectController.getProjectByI
 // Route POST /api/projects
 router.post('/', auth,validateProject, projectController.createProject);
 
+// ROUTE POST /api/projects/:projectId/user/:userId
+router.post('/:projectId/user/:userId',auth,validateProjectId,validateUserId, projectController.addUserToProject);
 
 // Route PUT /api/projects/:id
 router.put('/:projectId',auth,validateProjectId, projectController.updateProject);

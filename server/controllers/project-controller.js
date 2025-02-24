@@ -76,11 +76,16 @@ const createProject = async (req, res) => {
 };
 
 const addUserToProject = async (req, res) => {
-    const { userId, projectId } = req.body;
+    const { userId, projectId } = req.params;
     const user = await User.findById(userId);
     const project = await Project.findById(projectId);
     if (!user || !project) {
         return res.status(404).json({ message: 'User or project not found' });
+    }
+    //On verifie si le lien existe deja
+    const projectUserExists = await ProjectUser.findOne({ project: projectId, user: userId });
+    if (projectUserExists) {
+        return res.status(400).json({ message: 'This RelationShip already Exists' });
     }
     //On cree le lien dans ProjectUser
     const projectUser = new ProjectUser({
@@ -137,5 +142,6 @@ module.exports = {
     getProjectById,
     createProject,
     updateProject,
-    deleteProject
+    deleteProject,
+    addUserToProject
 };
