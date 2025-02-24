@@ -1,7 +1,11 @@
 <script setup> 
-import { createTask } from "@/services/task";
-import { ref } from 'vue';
+import { createTask, updateTask } from "@/services/task";
+import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+
+const props = defineProps({
+  taskToEdit: Object, // La tache existant à modifier (peut être null)
+});
 
 const route = useRoute();
 
@@ -12,18 +16,39 @@ const description = ref('')
 
 const projectId = route.params.projectId; 
 
+watch(() => props.taskToEdit, (newTask) => {
+  if (newTask) {
+    title.value = newTask.title;
+    description.value = newTask.description;
+  } else {
+    title.value = '';
+    description.value = '';
+  }
+},
+{ immediate: true }
+);
+
 const submitTask = async () => {
   errorMessage.value = '';
   successMessage.value = '';
 
   try {
-    const data = await createTask(title.value, description.value, projectId);
-    successMessage.value = 'succes';
-    console.log(successMessage);
+    if (props.taskToEdit) {
+      // Modification de la tache existant
+      await updateTask(title.value, description.value,props.taskToEdit._id);
+      successMessage.value = 'Tache mis à jour avec succès';
+    } else {
+      // Création d'une nouvelle tache
+      const data = await createTask(title.value, description.value, projectId);
+      successMessage.value = 'succes';
+      console.log(successMessage);
+    }
+      
   } catch (error) {
     console.error(error);
     errorMessage.value = error.message;
   }
+  window.location.reload();
 };
 
 </script>

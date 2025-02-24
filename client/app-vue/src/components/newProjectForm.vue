@@ -41,6 +41,7 @@ const submitProject = async () => {
     console.error(error);
     errorMessage.value = error.message;
   }
+  window.location.reload();
 };
 
 </script>

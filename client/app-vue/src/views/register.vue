@@ -49,7 +49,7 @@ const register = async () => {
         <input type="password" v-model="password" required />
       </div>
 
-      <button type="submit">Se connecter</button>
+      <button type="submit">register</button>
 
       <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
       <p v-if="successMessage" class="success">{{ successMessage }}</p>

@@ -38,7 +38,6 @@ const response = await fetch('http://localhost:3000/api/tasks/', {
     body:JSON.stringify({
       "title": title,
       "description": description,
-      "dateCreation": "2025-02-21T12:00:00.000Z",
       "author": userId,
       "project": project
   }
@@ -56,7 +55,7 @@ return data;
 };
 
 
-export const updateTask = async (status, taskId) => {
+export const updateStatusTask = async (status, taskId) => {
 
   const token = localStorage.getItem('token');
   const userId =  localStorage.getItem('userId');
@@ -87,3 +86,35 @@ export const updateTask = async (status, taskId) => {
   
   return data;
   };
+
+  export const updateTask = async (title, description, taskId) => {
+
+    const token = localStorage.getItem('token');
+    const userId =  localStorage.getItem('userId');
+    console.log(userId);
+    console.log(taskId);
+   
+    
+    const response = await fetch('http://localhost:3000/api/tasks/' + taskId, {
+        method: 'PUT',
+        headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        },
+        body:JSON.stringify({
+          "editer": userId,
+          "title": title,
+          "description": description,
+      }
+      )
+    
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+        throw new Error(data.message || 'Erreur de connexion');
+    }
+    
+    return data;
+    };

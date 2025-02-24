@@ -1,9 +1,14 @@
 <script setup> 
+function logout() {
+    localStorage.removeItem('token');
+    window.location.reload();
+}
 </script>
 
 <template>
     <div id="headerContainer">
         <h1 id="title"> Project Manager </h1>
+        <button @click="logout" class="logout">logout</button>
     </div>
 
 </template>
@@ -21,6 +26,12 @@
 
     #title {
         color: #333;
+    }
+
+    .logout{
+        position: absolute;
+        top:50px;
+        right: 50px;
     }
 
 </style>

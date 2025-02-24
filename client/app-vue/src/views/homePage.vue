@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { getUser } from "@/services/auth";
-import { getProjectByUser } from "@/services/project";
+import { getProjectByUser, deleteProject } from "@/services/project";
 import ProjectCard from "@/components/projectCard.vue";
 import newProjectForm from "@/components/newProjectForm.vue";
 import { useRouter } from "vue-router";
@@ -41,13 +41,19 @@ function editProject(project) {
   projectToEdit.value = project; // Stocke le projet à éditer
   showForm.value = true; // Affiche le formulaire
 }
+
+function handleDelete(projectId) {
+  console.log(projectId);
+  deleteProject(projectId);
+  window.location.reload();
+}
 </script>
 
 <template>
   <button class="newBtn" @click="toggleForm">New project</button>
 
   <div class="projects-container">
-    <ProjectCard v-for="project in userProject" :key="project._id" :projectProps="project" @editProject="editProject"/>
+    <ProjectCard v-for="project in userProject" :key="project._id" :projectProps="project" @editProject="editProject" @deleteProject="handleDelete"/>
   </div>
 
   

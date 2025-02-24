@@ -1,5 +1,5 @@
 <script setup>
-import { getTask, updateTask } from "@/services/task"; // Ajout d'une fonction updateTask pour mettre à jour le statut
+import { getTask, updateStatusTask } from "@/services/task"; // Ajout d'une fonction updateTask pour mettre à jour le statut
 import { ref, computed } from "vue";
 import { onMounted } from "vue";
 import NewTaskForm from "@/components/newTaskForm.vue";
@@ -11,10 +11,16 @@ const showForm = ref(false);
 const projectTasks = ref([]);
 const projectId = route.params.projectId;
 const draggedTask = ref(null); // Stocke la tâche en cours de déplacement
+const taskToEdit = ref(null); // Stocke le projet à éditer
 
 function toggleForm() {
   showForm.value = !showForm.value;
   console.log(showForm.value);
+}
+
+function editTask(task) {
+  taskToEdit.value = task; // Stocke le projet à éditer
+  showForm.value = true; // Affiche le formulaire
 }
 
 onMounted(async () => {
@@ -49,7 +55,7 @@ async function updateTaskStatus(newStatus) {
     );
 
     try {
-    await updateTask(newStatus, draggedTask.value._id);
+    await updateStatusTask(newStatus, draggedTask.value._id);
     } catch (error) {
     console.error("Erreur lors de la mise à jour :", error);
   }
@@ -63,13 +69,14 @@ async function updateTaskStatus(newStatus) {
   <h1>Task Board</h1>
   <button @click="toggleForm" class="newTaskBtn">New Task</button>
   <div v-if="showForm" class="overlay" @click="toggleForm"></div>
-  <NewTaskForm v-if="showForm" class="newTaskForm"/>
+  <NewTaskForm v-if="showForm" class="newTaskForm" :taskToEdit="taskToEdit"/>
   <div id="container">
     <div id="taskRequested" @dragover.prevent @drop="updateTaskStatus('taskRequested')">
       <h2>To Do</h2>
       <div class="task" v-for="task in tasksRequested" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
+        <button @click="editTask(task)">Edit</button>
       </div>
     </div>
 
@@ -78,6 +85,7 @@ async function updateTaskStatus(newStatus) {
       <div class="task" v-for="task in tasksInProgress" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
+        <button @click="editTask(task)">Edit</button>
       </div>
     </div>
 
@@ -86,6 +94,7 @@ async function updateTaskStatus(newStatus) {
       <div class="task" v-for="task in tasksDone" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
+        <button @click="editTask(task)">Edit</button>
       </div>
     </div>
   </div>

@@ -79,3 +79,51 @@ export const updateProject = async (title, description, projectId) => {
 
   return data;
 };
+
+
+export const addUserToProject = async (projectId, userId) => {
+  
+  const token = localStorage.getItem('token');
+  console.log(userId);
+  console.log(title);
+
+  const response = await fetch('http://localhost:3000/api/project/'+ projectId + '/user/' + userId, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    }
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Erreur de connexion');
+  }
+
+  return data;
+};
+
+
+
+export const deleteProject = async (projectId) => {
+  
+  const token = localStorage.getItem('token');
+
+  const response = await fetch('http://localhost:3000/api/project/'+ projectId, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    }
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Erreur de connexion');
+  }
+
+  return data;
+};
+
