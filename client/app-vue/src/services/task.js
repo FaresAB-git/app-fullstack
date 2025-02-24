@@ -56,12 +56,14 @@ return data;
 };
 
 
-export const updateTask = async (title, description, project, status, taskId) => {
+export const updateTask = async (status, taskId) => {
 
   const token = localStorage.getItem('token');
   const userId =  localStorage.getItem('userId');
   console.log(userId);
-  console.log(title);
+  console.log(status);
+  console.log(taskId);
+ 
   
   const response = await fetch('http://localhost:3000/api/tasks/' + taskId, {
       method: 'PUT',
@@ -71,7 +73,7 @@ export const updateTask = async (title, description, project, status, taskId) =>
       },
       body:JSON.stringify({
         "status": status,
-        
+        "editer": userId,
     }
     )
   

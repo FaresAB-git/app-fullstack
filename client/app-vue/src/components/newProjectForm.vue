@@ -1,21 +1,43 @@
 <script setup> 
-import { createProject } from '@/services/project';
-import { ref } from 'vue';
+import { createProject, updateProject } from '@/services/project';
+import { ref, watch } from 'vue';
+
+const props = defineProps({
+  projectToEdit: Object, // Le projet existant à modifier (peut être null)
+});
 
 const errorMessage = ref('');
 const successMessage = ref('');
 const title = ref('')
 const description = ref('')
 
+watch(() => props.projectToEdit, (newProject) => {
+  if (newProject) {
+    title.value = newProject.title;
+    description.value = newProject.description;
+  } else {
+    title.value = '';
+    description.value = '';
+  }
+},
+{ immediate: true }
+);
+
 const submitProject = async () => {
   errorMessage.value = '';
   successMessage.value = '';
 
   try {
-    const data = await createProject(title.value, description.value);
-    successMessage.value = 'succes';
-    console.log(successMessage);
-  } catch (error) {
+    if (props.projectToEdit) {
+      // Modification du projet existant
+      await updateProject(title.value, description.value,props.projectToEdit._id);
+      successMessage.value = 'Projet mis à jour avec succès';
+    } else {
+      // Création d'un nouveau projet
+      await createProject(title.value, description.value);
+      successMessage.value = 'Projet créé avec succès';
+    }
+    } catch (error) {
     console.error(error);
     errorMessage.value = error.message;
   }
@@ -40,6 +62,7 @@ const submitProject = async () => {
 
 #form{
     padding: 20px;
+    border-radius: 8px;
     background-color: whitesmoke;
     width: 300px;
     margin: auto;

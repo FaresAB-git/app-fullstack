@@ -19,7 +19,7 @@ export const getProjectByUser = async () => {
     return data;
   };
 
-//marche pas encore
+
 export const createProject = async (title, description) => {
   
   const token = localStorage.getItem('token');
@@ -37,6 +37,36 @@ export const createProject = async (title, description) => {
       'title': title,
       'description': description,
       'owner': userId
+    })
+
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Erreur de connexion');
+  }
+
+  return data;
+};
+
+
+export const updateProject = async (title, description, projectId) => {
+  
+  const token = localStorage.getItem('token');
+  const userId =  localStorage.getItem('userId');
+  console.log(userId);
+  console.log(title);
+
+  const response = await fetch('http://localhost:3000/api/project/' + projectId, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body:JSON.stringify({
+      'title': title,
+      'description': description,
     })
 
   });

@@ -29,7 +29,7 @@ const submitTask = async () => {
 </script>
 
 <template>
-   <div id="container">
+   <div id="containerTaskForm">
         <form id="form" @submit.prevent="submitTask">
             <label for="title">Title:</label>
             <input v-model="title" type="text" id="title" name="title"><br><br>
@@ -50,6 +50,7 @@ const submitTask = async () => {
     margin: auto;
     display: flex;
     flex-direction: column;
+    border-radius: 8px;
 }
 
 

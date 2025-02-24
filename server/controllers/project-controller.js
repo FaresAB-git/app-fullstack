@@ -98,14 +98,16 @@ const addUserToProject = async (req, res) => {
 // Update an existing project
 const updateProject = async (req, res) => {
     try {
-        const project = await Project.findById(req.params.id);
+        const project = await Project.findById(req.params.projectId);
         if (!project) {
             return res.status(404).json({ message: 'Project not found' });
         }
 
-        project.name = req.body.name || project.name;
-        project.description = req.body.description || project.description;
-        project.status = req.body.status || project.status;
+        project.set({
+            title: req.body.title || project.title,
+            description: req.body.description || project.description,
+            status: req.body.status || project.status
+        });
 
         const updatedProject = await project.save();
         return res.status(200).json(updatedProject);

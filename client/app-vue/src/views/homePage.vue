@@ -4,17 +4,30 @@ import { getUser } from "@/services/auth";
 import { getProjectByUser } from "@/services/project";
 import ProjectCard from "@/components/projectCard.vue";
 import newProjectForm from "@/components/newProjectForm.vue";
+import { useRouter } from "vue-router";
 
 
 const userProject = ref([]);
 const userData = ref(null);
 const showForm = ref(false);
+const projectToEdit = ref(null); // Stocke le projet à éditer
+
+const router = useRouter();
 
 onMounted(async () => {
-  userData.value = await getUser();
-  console.log(userData.value);
-  console.log(userData.value._id);
-  localStorage.setItem("userId", userData.value._id);
+  try {
+    userData.value = await getUser();
+    console.log(userData.value);
+    console.log(userData.value._id);
+    localStorage.setItem("userId", userData.value._id);
+  } catch (error) {
+    console.error(error);
+    if (error.message === "Token is not valid") {
+      localStorage.removeItem("userId");
+      localStorage.removeItem("token"); // Si tu stockes le token
+      router.push("/login"); // Redirection via Vue Router
+    }
+  }
 
   userProject.value = await getProjectByUser();
   console.log(userProject.value);
@@ -23,18 +36,23 @@ onMounted(async () => {
 function toggleForm() {
   showForm.value = !showForm.value;
 }
+
+function editProject(project) {
+  projectToEdit.value = project; // Stocke le projet à éditer
+  showForm.value = true; // Affiche le formulaire
+}
 </script>
 
 <template>
   <button class="newBtn" @click="toggleForm">New project</button>
 
   <div class="projects-container">
-    <ProjectCard v-for="project in userProject" :key="project._id" :projectProps="project" />
+    <ProjectCard v-for="project in userProject" :key="project._id" :projectProps="project" @editProject="editProject"/>
   </div>
 
   
   <div v-if="showForm" class="overlay" @click="toggleForm"></div>
-  <newProjectForm v-if="showForm" class="newProjectForm" />
+  <newProjectForm v-if="showForm" class="newProjectForm" :projectToEdit="projectToEdit"/>
 </template>
 
 <style scoped>

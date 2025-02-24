@@ -14,6 +14,7 @@ const draggedTask = ref(null); // Stocke la tâche en cours de déplacement
 
 function toggleForm() {
   showForm.value = !showForm.value;
+  console.log(showForm.value);
 }
 
 onMounted(async () => {
@@ -48,7 +49,7 @@ async function updateTaskStatus(newStatus) {
     );
 
     try {
-    await updateTask( draggedTask.value.title, draggedTask.value.description, draggedTask.value.project, newStatus, draggedTask.value._id);
+    await updateTask(newStatus, draggedTask.value._id);
     } catch (error) {
     console.error("Erreur lors de la mise à jour :", error);
   }
@@ -61,7 +62,8 @@ async function updateTaskStatus(newStatus) {
 <template>
   <h1>Task Board</h1>
   <button @click="toggleForm" class="newTaskBtn">New Task</button>
-  <NewTaskForm v-if="showForm" />
+  <div v-if="showForm" class="overlay" @click="toggleForm"></div>
+  <NewTaskForm v-if="showForm" class="newTaskForm"/>
   <div id="container">
     <div id="taskRequested" @dragover.prevent @drop="updateTaskStatus('taskRequested')">
       <h2>To Do</h2>
@@ -133,5 +135,26 @@ async function updateTaskStatus(newStatus) {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+}
+
+.newTaskForm {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 8px;
+  z-index: 1001;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 1000;
 }
 </style>
