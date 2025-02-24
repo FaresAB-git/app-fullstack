@@ -100,6 +100,21 @@ const addUserToProject = async (req, res) => {
     }
 };
 
+// Remove a user from a project
+const removeUserFromProject = async (req, res) => {
+    const { userId, projectId } = req.params;
+    const projectUser = await ProjectUser.findOne({ project: projectId, user: userId });
+    if (!projectUser) {
+        return res.status(404).json({ message: 'User not found in project' });
+    }
+    try {
+        await projectUser.remove();
+        return res.status(200).json({ message: 'User removed from project' });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 // Update an existing project
 const updateProject = async (req, res) => {
     try {
@@ -143,5 +158,6 @@ module.exports = {
     createProject,
     updateProject,
     deleteProject,
-    addUserToProject
+    addUserToProject,
+    removeUserFromProject
 };
