@@ -1,5 +1,5 @@
 <script setup>
-import { getTask, updateStatusTask } from "@/services/task"; // Ajout d'une fonction updateTask pour mettre à jour le statut
+import { getTask, updateStatusTask, deleteTask } from "@/services/task"; // Ajout d'une fonction updateTask pour mettre à jour le statut
 import { ref, computed } from "vue";
 import { onMounted } from "vue";
 import NewTaskForm from "@/components/newTaskForm.vue";
@@ -21,6 +21,12 @@ function toggleForm() {
 function editTask(task) {
   taskToEdit.value = task; // Stocke le projet à éditer
   showForm.value = true; // Affiche le formulaire
+}
+
+function handleDelete(taskId){
+  console.log(taskId)
+  deleteTask(taskId)
+  window.location.reload();
 }
 
 onMounted(async () => {
@@ -77,6 +83,7 @@ async function updateTaskStatus(newStatus) {
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
         <button @click="editTask(task)">Edit</button>
+        <button @click="handleDelete(task._id)">Delete</button>
       </div>
     </div>
 
@@ -86,6 +93,7 @@ async function updateTaskStatus(newStatus) {
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
         <button @click="editTask(task)">Edit</button>
+        <button @click="handleDelete(task._id)">Delete</button>
       </div>
     </div>
 
@@ -95,6 +103,7 @@ async function updateTaskStatus(newStatus) {
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
         <button @click="editTask(task)">Edit</button>
+        <button @click="handleDelete(task._id)">Delete</button>
       </div>
     </div>
   </div>
