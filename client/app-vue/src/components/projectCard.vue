@@ -1,7 +1,27 @@
 <script setup>
+import { onMounted, ref } from 'vue';
+import { getUserById } from '@/services/auth';
+
 const props = defineProps({
   projectProps: Object
 });
+
+const ownerName = ref("Chargement...");
+ 
+
+// Récupérer le username de l'owner via son ID
+onMounted(async () => {
+  if (props.projectProps?.owner) {
+    try {
+      const user = await getUserById(props.projectProps.owner);
+      ownerName.value = user.username || "Utilisateur inconnu";
+    } catch (error) {
+      console.error("Erreur lors de la récupération de l'owner :", error);
+      ownerName.value = "Erreur de chargement";
+    }
+  }
+});
+
 
 const emit = defineEmits(["editProject", "deleteProject"]); // Émission d'un événement pour passer le projet à éditer
 </script>
@@ -11,7 +31,7 @@ const emit = defineEmits(["editProject", "deleteProject"]); // Émission d'un é
     <router-link :to="{ name: 'task', params: { projectId: projectProps._id } }" class="link">
       <h2>{{ projectProps.title }}</h2>
     
-      <p><strong>Créateur :</strong> {{ projectProps.owner }}</p>
+      <p><strong>Créateur :</strong> {{ ownerName  }}</p>
       <p><strong>Description :</strong> {{ projectProps.description }}</p>
       <p><strong>Date de création :</strong> {{ projectProps.dateCreation }}</p>
     </router-link>

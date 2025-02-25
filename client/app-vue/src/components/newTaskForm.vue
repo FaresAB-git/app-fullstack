@@ -59,7 +59,7 @@ const submitTask = async () => {
             <label for="title">Title:</label>
             <input v-model="title" type="text" id="title" name="title"><br><br>
             <label for="description">Description:</label>
-            <input v-model="description" type="text" id="description" name="description"><br><br>
+            <input v-model="description" type="text" id="description" name="description" required="true"><br><br>
             <input type="submit" value="Submit">
         </form>
     </div>

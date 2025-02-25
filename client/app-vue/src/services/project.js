@@ -127,3 +127,24 @@ export const deleteProject = async (projectId) => {
   return data;
 };
 
+export const getProjectUsers = async (projectId) => {
+  
+  const token = localStorage.getItem('token');
+
+  const response = await fetch('http://localhost:3000/api/project/'+ projectId + '/users', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    }
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Erreur de connexion');
+  }
+
+  return data;
+};
+

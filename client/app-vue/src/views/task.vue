@@ -1,20 +1,29 @@
 <script setup>
-import { getTask, updateStatusTask, deleteTask } from "@/services/task"; // Ajout d'une fonction updateTask pour mettre à jour le statut
+import { getTask, updateStatusTask, deleteTask } from "@/services/task"; // Ajout d'une fonction updateTask pour mettre à jour le 
+import { getProjectUsers } from "@/services/project";
 import { ref, computed } from "vue";
 import { onMounted } from "vue";
 import NewTaskForm from "@/components/newTaskForm.vue";
 import { useRoute } from "vue-router";
+import addMemberForms from "@/components/addMemberForms.vue";
 
 const route = useRoute();
 
 const showForm = ref(false);
+const showFormMember = ref(false);
 const projectTasks = ref([]);
 const projectId = route.params.projectId;
 const draggedTask = ref(null); // Stocke la tâche en cours de déplacement
 const taskToEdit = ref(null); // Stocke le projet à éditer
+const projectMembers = ref(null);
 
 function toggleForm() {
   showForm.value = !showForm.value;
+  console.log(showForm.value);
+}
+
+function toggleFormMembers() {
+  showFormMember.value = !showFormMember.value;
   console.log(showForm.value);
 }
 
@@ -32,6 +41,8 @@ function handleDelete(taskId){
 onMounted(async () => {
   projectTasks.value = await getTask(projectId);
   console.log(projectTasks.value);
+  projectMembers.value = await(getProjectUsers(projectId))
+  console.log(projectMembers.value)
 });
 
 // Filtrer les tâches en fonction de leur statut
@@ -73,7 +84,11 @@ async function updateTaskStatus(newStatus) {
 
 <template>
   <h1>Task Board</h1>
+  
+  
   <button @click="toggleForm" class="newTaskBtn">New Task</button>
+  <button @click="toggleFormMembers" class="newTaskBtn">Add members</button>
+  
   <div v-if="showForm" class="overlay" @click="toggleForm"></div>
   <NewTaskForm v-if="showForm" class="newTaskForm" :taskToEdit="taskToEdit"/>
   <div id="container">
@@ -82,8 +97,9 @@ async function updateTaskStatus(newStatus) {
       <div class="task" v-for="task in tasksRequested" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
+        <p> {{ task.editer }}</p>
         <button @click="editTask(task)">Edit</button>
-        <button @click="handleDelete(task._id)">Delete</button>
+        <button @click="handleDelete(task._id)" class='delBtn'>Delete</button>
       </div>
     </div>
 
@@ -92,8 +108,9 @@ async function updateTaskStatus(newStatus) {
       <div class="task" v-for="task in tasksInProgress" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
+        <p> {{ task.editer }}</p>
         <button @click="editTask(task)">Edit</button>
-        <button @click="handleDelete(task._id)">Delete</button>
+        <button @click="handleDelete(task._id)" class='delBtn'>Delete</button>
       </div>
     </div>
 
@@ -102,11 +119,15 @@ async function updateTaskStatus(newStatus) {
       <div class="task" v-for="task in tasksDone" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
+        <p> {{ task.editer }}</p>
         <button @click="editTask(task)">Edit</button>
-        <button @click="handleDelete(task._id)">Delete</button>
+        <button @click="handleDelete(task._id)" class='delBtn'>Delete</button>
       </div>
     </div>
   </div>
+  <div v-if="showFormMember" class="overlay" @click="toggleFormMembers"></div>
+  <addMemberForms v-if="showFormMember"/>
+  
 </template>
 
 <style scoped>
@@ -174,5 +195,9 @@ async function updateTaskStatus(newStatus) {
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(2px);
   z-index: 1000;
+}
+
+.delBtn{
+  margin-left: 10px;
 }
 </style>
