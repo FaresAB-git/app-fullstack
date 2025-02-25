@@ -25,6 +25,16 @@ const getProjectsByUserId = async (req, res) => {
     }
 };
 
+const getUsersByProjectId = async (req, res) => {
+    try {
+        const usersId = await ProjectUser.find({ project: req.params.projectId });
+        const users = await User.find({ _id: { $in: usersId.map(user => user.user) } });
+        return res.status(200).json(users);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 // Get a single project by ID
 const getProjectById = async (req, res) => {
     try {
@@ -155,6 +165,7 @@ module.exports = {
     getAllProjects,
     getProjectsByUserId,
     getProjectById,
+    getUsersByProjectId,
     createProject,
     updateProject,
     deleteProject,

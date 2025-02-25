@@ -16,6 +16,9 @@ router.get('/user/:userId', auth, validateUserId, projectController.getProjectsB
 // Route GET /api/projects/:id
 router.get('/:projectId',auth,validateProjectId, projectController.getProjectById);
 
+// Route GET /api/projects/:id/users
+router.get('/:projectId/users',auth,validateProjectId, projectController.getUsersByProjectId);
+
 // Route POST /api/projects
 router.post('/', auth,validateProject, projectController.createProject);
 
