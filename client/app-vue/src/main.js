@@ -5,6 +5,10 @@ import './main.css';
 
 
 
+
+
+
+
 const app = createApp(App);
 app.use(router); // Activation de Vue Router
 app.mount('#app');

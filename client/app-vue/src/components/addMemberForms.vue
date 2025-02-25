@@ -58,7 +58,7 @@ async function handleAddMember() {
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* S'assure qu'il soit au-dessus des autres éléments */
+  z-index: 1000; 
 }
 
 .select-container {
