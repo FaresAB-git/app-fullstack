@@ -21,7 +21,7 @@ const emit = defineEmits(["toggleTchat"]);
       </div>
       <div class="chat-input">
         <input class="input-field" placeholder="Écrire un message..." />
-        <button class="send-button" disabled>Envoyer</button>
+        <button class="send-button">Envoyer</button>
       </div>
     </div>
   </template>
@@ -43,7 +43,7 @@ const emit = defineEmits(["toggleTchat"]);
   
 
   .chat-header {
-    background-color: lightgray;
+    background-color: lightblue;
     color: black;
     padding: 10px;
     max-height: 30px;
@@ -110,7 +110,7 @@ const emit = defineEmits(["toggleTchat"]);
   .send-button {
     margin-left: 5px;
     padding: 8px 12px;
-    background: #007bff;
+    background: lightblue;
     color: white;
     border: none;
     border-radius: 4px;

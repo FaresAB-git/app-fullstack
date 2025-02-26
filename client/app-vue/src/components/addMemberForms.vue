@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { getAllUsers } from '@/services/auth';
-import { addUserToProject, getProjectUsers } from '@/services/project';
+import { addUserToProject, getProjectUsers, deleteUserFromProject } from '@/services/project';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -23,6 +23,15 @@ async function handleAddMember() {
     projectMembers.value = await getProjectUsers(projectId); // Met à jour la liste des membres
   }
 }
+
+async function deleteMember(memberId) {
+  
+  await deleteUserFromProject(projectId, memberId);
+  projectMembers.value = await getProjectUsers(projectId); // Met à jour la liste des membres
+  
+}
+
+
 </script>
 
 <template>
@@ -41,7 +50,7 @@ async function handleAddMember() {
     <div class="member-list">
       <h3>Project Members:</h3>
       <ul>
-        <li v-for="member in projectMembers" :key="member._id">{{ member.username }}</li>
+        <li v-for="member in projectMembers" :key="member._id">{{ member.username }} <button @click="deleteMember(member._id)" id="delete"> delete </button></li>
       </ul>
     </div>
   </div>
@@ -73,6 +82,9 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+#delete{
+  background-color: rgb(255, 40, 40);
 }
 
 .member-list {

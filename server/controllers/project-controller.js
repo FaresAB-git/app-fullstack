@@ -118,7 +118,7 @@ const removeUserFromProject = async (req, res) => {
         return res.status(404).json({ message: 'User not found in project' });
     }
     try {
-        await projectUser.remove();
+        await ProjectUser.deleteOne({ _id: projectUser._id }); 
         return res.status(200).json({ message: 'User removed from project' });
     } catch (error) {
         return res.status(500).json({ message: error.message });

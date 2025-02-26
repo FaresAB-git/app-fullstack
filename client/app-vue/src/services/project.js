@@ -104,6 +104,30 @@ export const addUserToProject = async (projectId, userId) => {
   return data;
 };
 
+export const deleteUserFromProject = async (projectId, userId) => {
+  
+  const token = localStorage.getItem('token');
+  console.log(userId);
+  console.log(title);
+
+  const response = await fetch('http://localhost:3000/api/project/'+ projectId + '/user/' + userId, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    }
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Erreur de connexion');
+  }
+
+  return data;
+};
+
+
 
 
 export const deleteProject = async (projectId) => {

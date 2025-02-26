@@ -92,7 +92,7 @@ async function updateTaskStatus(newStatus) {
 </script>
 
 <template>
-  <h1>Task Board</h1>
+  <h1 id="kanbanTitle">Kanban</h1>
   
   
   <button @click="toggleForm" class="newTaskBtn">New Task</button>
@@ -102,7 +102,7 @@ async function updateTaskStatus(newStatus) {
   <NewTaskForm v-if="showForm" class="newTaskForm" :taskToEdit="taskToEdit"/>
   <div id="container">
     <div id="taskRequested" @dragover.prevent @drop="updateTaskStatus('taskRequested')">
-      <h2>To Do</h2>
+      <h2 class="statusTitle">To Do</h2>
       <div class="task" v-for="task in tasksRequested" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
@@ -113,7 +113,7 @@ async function updateTaskStatus(newStatus) {
     </div>
 
     <div id="inProgress" @dragover.prevent @drop="updateTaskStatus('InProgress')">
-      <h2>In Progress</h2>
+      <h2 class="statusTitle">In Progress</h2>
       <div class="task" v-for="task in tasksInProgress" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
@@ -124,7 +124,7 @@ async function updateTaskStatus(newStatus) {
     </div>
 
     <div id="done" @dragover.prevent @drop="updateTaskStatus('Done')">
-      <h2>Done</h2>
+      <h2 class="statusTitle">Done</h2>
       <div class="task" v-for="task in tasksDone" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
         <h3>{{ task.title }}</h3>
         <p>{{ task.description }}</p>
@@ -166,6 +166,10 @@ async function updateTaskStatus(newStatus) {
   bottom: 30px;
   
 }
+
+#kanbanTitle{
+  text-align: center;
+}
 #container {
   display: flex;
   flex-direction: row;
@@ -188,6 +192,21 @@ async function updateTaskStatus(newStatus) {
   padding: 10px;
   border-radius: 8px;
   min-height: 400px;
+}
+
+#done .task {
+  background-color: rgba(13, 216, 13, 0.911);
+}
+#inProgress .task {
+  background-color: orange;
+}
+#taskRequested .task {
+  background-color: rgb(233, 53, 53);
+}
+
+
+.statusTitle{
+  text-align: center;
 }
 
 .task {
