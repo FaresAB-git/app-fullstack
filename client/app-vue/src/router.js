@@ -5,10 +5,10 @@ import login from './views/login.vue'; // Import de la nouvelle page
 import register from './views/register.vue';
 import task from './views/task.vue';
 const routes = [
-  { path: '/', component: homePage, meta: {requiresAuth: true} },      // Page principale
-  { path: '/login', component: login }, // Nouvelle page
-  { path: '/register', component: register },
-  { name: "task", component: task, path: '/task/:projectId', meta: {requiresAuth: true} } // Ajout de l'id projet en paramètre
+  { path: '/', name: 'home', component: homePage, meta: {requiresAuth: true} }, // Page principale
+  { path: '/login', name: 'login', component: login }, // Nouvelle page
+  { path: '/register', name: 'register', component: register },
+  { path: '/task/:projectId', name: 'task', component: task, meta: {requiresAuth: true} } // Ajout de l'id projet en paramètre
 ];
 
 const router = createRouter({
@@ -21,6 +21,8 @@ router.beforeEach((to, from, next) => {
 
   if (to.meta.requiresAuth && !token) {
     next('/login'); // Redirige vers la page de connexion si pas de token
+  } else if ((to.name === 'login' || to.name === 'register') && token) {
+    next('/'); // Redirige vers la page d'accueil si déjà authentifié
   } else {
     next(); // Continue la navigation
   }

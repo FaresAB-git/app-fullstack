@@ -1,14 +1,24 @@
 <script setup>
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
+
 function logout() {
-    localStorage.removeItem('token'); //supression du token
-    window.location.reload(); //si la page est reloead et qu il n'y a pas de token on est redirigé sur login
+    localStorage.removeItem('token'); // suppression du token
+    window.location.reload(); // si la page est rechargée et qu'il n'y a pas de token, on est redirigé sur login
 }
+
+const route = useRoute();
+
+const showLogoutButton = computed(() => {
+    console.log(route.name);
+    return route.name !== 'login' && route.name !== 'register';
+});
 </script>
 
 <template>
     <div id="headerContainer">
         <h1 id="title">Project Manager</h1>
-        <button @click="logout" class="logout">Logout</button>
+        <button v-if="showLogoutButton" class="logout" @click="logout">Logout</button>
     </div>
 </template>
 
