@@ -7,14 +7,13 @@ import { useRoute } from 'vue-router';
 const route = useRoute();
 
 const projectId = route.params.projectId;
-const project = ref(null);
 const users = ref([]);
 const selectedUser = ref(null);
 const projectMembers = ref([]);
 
 onMounted(async () => {
-  users.value = await getAllUsers();
-  projectMembers.value = await getProjectUsers(projectId);
+  users.value = await getAllUsers();  //recuperation de la liste de tout les utilisateurs pour pouvoir les ajouter
+  projectMembers.value = await getProjectUsers(projectId);  //recuperation des membre du projet 
 
 });
 

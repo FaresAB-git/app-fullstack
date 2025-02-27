@@ -17,7 +17,7 @@ const title = ref('');
 const description = ref('');
 const responsable = ref('');
 const projectMembers = ref([]);
-const userResponsable = ref('');
+
 
 const projectId = route.params.projectId;
 

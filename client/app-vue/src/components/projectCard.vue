@@ -27,7 +27,7 @@ onMounted(async () => {
   
 });
 
-const emit = defineEmits(["editProject", "deleteProject"]); // Émission d'un événement pour passer le projet à éditer
+const emit = defineEmits(["editProject", "deleteProject"]); // Émission d'un événement pour appeler ces fonction dans le parent (pour edit et delete)
 </script>
 
 <template>
