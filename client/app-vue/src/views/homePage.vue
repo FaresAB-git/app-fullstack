@@ -6,7 +6,6 @@ import ProjectCard from "@/components/projectCard.vue";
 import newProjectForm from "@/components/newProjectForm.vue";
 import { useRouter } from "vue-router";
 
-
 const userProject = ref([]);
 const userData = ref(null);
 const showForm = ref(false);
@@ -50,36 +49,43 @@ function handleDelete(projectId) {
 </script>
 
 <template>
-  <button class="newBtn" @click="toggleForm">New project</button>
+  <div class="home-container">
+    <button class="newBtn" @click="toggleForm">New project</button>
 
-  <div class="projects-container">
-    <ProjectCard v-for="project in userProject" :key="project._id" :projectProps="project" @editProject="editProject" @deleteProject="handleDelete"/>
+    <div class="projects-container">
+      <ProjectCard v-for="project in userProject" :key="project._id" :projectProps="project" @editProject="editProject" @deleteProject="handleDelete"/>
+    </div>
+
+    <div v-if="showForm" class="overlay" @click="toggleForm"></div>
+    <newProjectForm v-if="showForm" class="newProjectForm" :projectToEdit="projectToEdit"/>
   </div>
-
-  
-  <div v-if="showForm" class="overlay" @click="toggleForm"></div>
-  <newProjectForm v-if="showForm" class="newProjectForm" :projectToEdit="projectToEdit"/>
 </template>
 
 <style scoped>
+.home-container {
+  padding: 20px;
+}
+
 .newBtn {
-  margin-left: 50px;
-  margin-top: 50px;
-  margin-bottom: 50px;
-  padding: 8px;
-  background-color: lightblue;
+  margin: 20px 0;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #ffffff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.newBtn:hover {
+  background-color: #0056b3;
 }
 
 .projects-container {
-  margin-left: 40px;
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
 }
-
 
 .overlay {
   position: fixed;
@@ -98,8 +104,10 @@ function handleDelete(projectId) {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background: #ffffff;
+  padding: 20px;
   border-radius: 8px;
   z-index: 1001;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 </style>

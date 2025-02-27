@@ -6,7 +6,6 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
-
 const projectId = route.params.projectId;
 const users = ref([]);
 const selectedUser = ref(null);
@@ -25,49 +24,58 @@ async function handleAddMember() {
 }
 
 async function deleteMember(memberId) {
-  
   await deleteUserFromProject(projectId, memberId);
   projectMembers.value = await getProjectUsers(projectId); // Met à jour la liste des membres
-  
 }
-
-
 </script>
 
 <template>
-<div class="memberformContainer">
-    
-</div>
-  <div class="add-member-container">
-    <div class="select-container">
-      <select v-model="selectedUser">
-        <option v-for="user in users" :key="user._id" :value="user._id">
-          {{ user.username }}
-        </option>
-      </select>
-      <button @click="handleAddMember">Add</button>
-    </div>
-    <div class="member-list">
-      <h3>Project Members:</h3>
-      <ul>
-        <li v-for="member in projectMembers" :key="member._id">{{ member.username }} <button @click="deleteMember(member._id)" id="delete"> delete </button></li>
-      </ul>
+  <div class="memberformContainer">
+    <div class="add-member-container">
+      <div class="select-container">
+        <select v-model="selectedUser">
+          <option v-for="user in users" :key="user._id" :value="user._id">
+            {{ user.username }}
+          </option>
+        </select>
+        <button @click="handleAddMember" class="add-btn">Add</button>
+      </div>
+      <div class="member-list">
+        <h3>Project Members:</h3>
+        <ul>
+          <li v-for="member in projectMembers" :key="member._id">
+            {{ member.username }}
+            <button @click="deleteMember(member._id)" class="delete-btn">Delete</button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.add-member-container {
+.memberformContainer {
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.add-member-container {
+  background-color: #ffffff;
   padding: 20px;
-  background-color: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  z-index: 1001;
 }
 
 .select-container {
@@ -76,15 +84,44 @@ async function deleteMember(memberId) {
   margin-bottom: 15px;
 }
 
-button {
-  padding: 5px 10px;
-  background-color: lightblue;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+select {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease;
 }
-#delete{
-  background-color: rgb(255, 40, 40);
+
+select:focus {
+  border-color: #007bff;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.add-btn {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.add-btn:hover {
+  background-color: #0056b3;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: #ffffff;
+  margin-left: 10px;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
 }
 
 .member-list {
@@ -97,6 +134,15 @@ ul {
 }
 
 li {
-  padding: 5px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+h3 {
+  margin-bottom: 10px;
+  color: #333;
 }
 </style>
