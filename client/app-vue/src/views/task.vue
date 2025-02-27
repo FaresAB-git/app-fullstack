@@ -1,5 +1,6 @@
 <script setup>
 import { getTask, updateStatusTask, deleteTask } from "@/services/task";
+import { getUserById } from "@/services/auth";
 import { getProjectUsers } from "@/services/project";
 import { ref, computed } from "vue";
 import { onMounted } from "vue";
@@ -15,18 +16,16 @@ const showFormMember = ref(false);
 const showTchat = ref(false);
 const projectTasks = ref([]);
 const projectId = route.params.projectId;
-const draggedTask = ref(null); // Stocke la tâche en cours de déplacement
-const taskToEdit = ref(null); // Stocke le projet à éditer
+const draggedTask = ref(null);
+const taskToEdit = ref(null);
 const projectMembers = ref(null);
 
 function toggleForm() {
   showForm.value = !showForm.value;
-  console.log(showForm.value);
 }
 
 function toggleFormMembers() {
   showFormMember.value = !showFormMember.value;
-  console.log(showFormMember.value);
 }
 
 function toggleTchat() {
@@ -34,21 +33,26 @@ function toggleTchat() {
 }
 
 function editTask(task) {
-  taskToEdit.value = task; // Stocke le projet à éditer
-  showForm.value = true; // Affiche le formulaire
+  taskToEdit.value = task;
+  showForm.value = true;
 }
 
 function handleDelete(taskId) {
-  console.log(taskId);
   deleteTask(taskId);
   window.location.reload();
 }
 
 onMounted(async () => {
   projectTasks.value = await getTask(projectId);
-  console.log(projectTasks.value);
+  console.log(projectTasks.value)
+
+  // Ajouter le username du responsable pour chaque tâche
+  for (let task of projectTasks.value) {
+    const user = await getUserById(task.responsable);
+    task.responsableUsername = user?.username || "Utilisateur Inconnu";
+  }
+
   projectMembers.value = await getProjectUsers(projectId);
-  console.log(projectMembers.value);
 });
 
 // Filtrer les tâches en fonction de leur statut
@@ -83,7 +87,7 @@ async function updateTaskStatus(newStatus) {
       console.error("Erreur lors de la mise à jour :", error);
     }
 
-    draggedTask.value = null; // Réinitialiser après le déplacement
+    draggedTask.value = null; 
   }
 }
 </script>
@@ -106,7 +110,7 @@ async function updateTaskStatus(newStatus) {
         <div class="task" v-for="task in tasksRequested" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
           <h3>{{ task.title }}</h3>
           <p>{{ task.description }}</p>
-          <p>{{ task.editer }}</p>
+          <p>responsable: {{ task.responsableUsername }}</p> 
           <div class="task-buttons">
             <button @click="editTask(task)" class="edit-btn">Edit</button>
             <button @click="handleDelete(task._id)" class="del-btn">Delete</button>
@@ -119,7 +123,7 @@ async function updateTaskStatus(newStatus) {
         <div class="task" v-for="task in tasksInProgress" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
           <h3>{{ task.title }}</h3>
           <p>{{ task.description }}</p>
-          <p>{{ task.editer }}</p>
+          <p>responsable: {{ task.responsableUsername }}</p> 
           <div class="task-buttons">
             <button @click="editTask(task)" class="edit-btn">Edit</button>
             <button @click="handleDelete(task._id)" class="del-btn">Delete</button>
@@ -132,7 +136,7 @@ async function updateTaskStatus(newStatus) {
         <div class="task" v-for="task in tasksDone" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
           <h3>{{ task.title }}</h3>
           <p>{{ task.description }}</p>
-          <p>{{ task.editer }}</p>
+          <p>responsable: {{  task.responsableUsername }}</p> 
           <div class="task-buttons">
             <button @click="editTask(task)" class="edit-btn">Edit</button>
             <button @click="handleDelete(task._id)" class="del-btn">Delete</button>
@@ -142,7 +146,7 @@ async function updateTaskStatus(newStatus) {
     </div>
     
     <div v-if="showFormMember" class="overlay" @click="toggleFormMembers"></div>
-    <addMemberForms v-if="showFormMember"/>
+    <addMemberForms v-if="showFormMember" class="addMemberForm"/>
 
     <div>
       <button type="button" class="btnTchat" @click="toggleTchat">
@@ -159,6 +163,12 @@ async function updateTaskStatus(newStatus) {
 </template>
 
 <style scoped>
+.addMemberForm{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
+}
 .task-page {
   padding: 20px;
   background-color: #f8f9fa;

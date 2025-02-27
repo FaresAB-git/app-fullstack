@@ -8,17 +8,23 @@ const props = defineProps({
 
 const ownerName = ref("Chargement...");
 
-// Récupérer le username de l'owner via son ID
+const isOwner = ref(false); //permet d'afficher le bouton edit et supprimer uniquement si le user est owner du projet
+
+// verifie si le user est owner du projet + Récupère le username de l'owner via son ID 
 onMounted(async () => {
-  if (props.projectProps?.owner) {
-    try {
-      const user = await getUserById(props.projectProps.owner);
-      ownerName.value = user.username || "Utilisateur inconnu";
-    } catch (error) {
-      console.error("Erreur lors de la récupération de l'owner :", error);
-      ownerName.value = "Erreur de chargement";
+  try {
+    if(props.projectProps.owner == localStorage.getItem("userId")) {  
+      isOwner.value = true;
+      console.log(isOwner.value);
     }
+
+    const user = await getUserById(props.projectProps.owner);
+    ownerName.value = user.username || "Utilisateur inconnu";
+  } catch (error) {
+    console.error("Erreur lors de la récupération de l'owner :", error);
+    ownerName.value = "Erreur de chargement";
   }
+  
 });
 
 const emit = defineEmits(["editProject", "deleteProject"]); // Émission d'un événement pour passer le projet à éditer
@@ -33,8 +39,8 @@ const emit = defineEmits(["editProject", "deleteProject"]); // Émission d'un é
       <p><strong>Date de création :</strong> {{ projectProps.dateCreation }}</p>
     </router-link>
     <div class="button-group">
-      <button @click="$emit('editProject', projectProps)" class="edit-btn">Edit</button>
-      <button @click="$emit('deleteProject', projectProps._id)" class="del-btn">Delete</button>
+      <button @click="$emit('editProject', projectProps)" class="edit-btn" v-if="isOwner">Edit</button>
+      <button @click="$emit('deleteProject', projectProps._id)" class="del-btn" v-if="isOwner">Delete</button>
     </div>
   </div>
 </template>

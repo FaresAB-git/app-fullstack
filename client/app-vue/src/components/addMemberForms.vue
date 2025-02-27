@@ -1,12 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { getAllUsers } from '@/services/auth';
-import { addUserToProject, getProjectUsers, deleteUserFromProject } from '@/services/project';
+import { addUserToProject, getProjectUsers, deleteUserFromProject} from '@/services/project';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
 const projectId = route.params.projectId;
+const project = ref(null);
 const users = ref([]);
 const selectedUser = ref(null);
 const projectMembers = ref([]);
@@ -14,6 +15,7 @@ const projectMembers = ref([]);
 onMounted(async () => {
   users.value = await getAllUsers();
   projectMembers.value = await getProjectUsers(projectId);
+
 });
 
 async function handleAddMember() {
@@ -55,16 +57,13 @@ async function deleteMember(memberId) {
 
 <style scoped>
 .memberformContainer {
-  
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 400px; 
   z-index: 1000;
 }
 

@@ -71,19 +71,6 @@ const updateTask = async (req, res) => {
             return res.status(404).send(error);
         }
 
-        if (!req.body.responsable) {
-            return res.status(400).send({ error: 'responsable not found' });
-        }
-
-        //Search if the responsable exists
-        let user;
-        if(req.body.responsable){
-            user = await User.findById(req.body.responsable);
-            if (!user) {
-                return res.status(404).send({ error: 'responsable not found' });
-            }
-        }
-        
         req.body.dateModification = new Date();
 
         updates.forEach((update) => task[update] = req.body[update]);

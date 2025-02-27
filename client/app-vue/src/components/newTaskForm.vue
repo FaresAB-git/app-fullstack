@@ -1,6 +1,8 @@
 <script setup>
 import { createTask, updateTask } from "@/services/task";
-import { ref, watch } from 'vue';
+import { getUser } from "@/services/auth";
+import { getProjectUsers} from '@/services/project';
+import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const props = defineProps({
@@ -13,8 +15,17 @@ const errorMessage = ref('');
 const successMessage = ref('');
 const title = ref('');
 const description = ref('');
+const responsable = ref('');
+const projectMembers = ref([]);
+const userResponsable = ref('');
 
 const projectId = route.params.projectId;
+
+
+onMounted(async () => {
+  projectMembers.value = await getProjectUsers(projectId);
+  console.log(projectMembers.value);
+});
 
 watch(() => props.taskToEdit, (newTask) => {
   if (newTask) {
@@ -29,16 +40,18 @@ watch(() => props.taskToEdit, (newTask) => {
 const submitTask = async () => {
   errorMessage.value = '';
   successMessage.value = '';
-
+  console.log(projectId);
   try {
     if (props.taskToEdit) {
       // Modification de la tache existant
-      await updateTask(title.value, description.value, props.taskToEdit._id);
+      console.log("editTask");
+      console.log(responsable.value);
+      await updateTask(title.value, description.value, responsable.value, props.taskToEdit._id);
       successMessage.value = 'Tache mis à jour avec succès';
     } else {
       // Création d'une nouvelle tache
-      const data = await createTask(title.value, description.value, projectId);
-      successMessage.value = 'Tache créée avec succès';
+      await createTask(title.value, description.value, responsable.value, projectId);
+      successMessage.value = 'Tache édité avec succès';
       console.log(successMessage);
     }
   } catch (error) {
@@ -62,6 +75,12 @@ const submitTask = async () => {
         <textarea v-model="description" id="description" name="description" required></textarea>
       </div>
       <div class="form-group">
+        <label for="description">responsable:</label>
+        <select v-model="responsable" id="responsable" name="responsable" value= required>
+          <option v-for="member in projectMembers" :key="member._id" :value="member._id"> {{ member.username }}</option>
+        </select>
+      </div>
+      <div class="form-group">
         <input type="submit" value="Submit" class="submit-btn">
       </div>
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
@@ -79,15 +98,15 @@ const submitTask = async () => {
 }
 
 #form {
-  padding: 30px; /* Augmenté pour plus d'espace */
+  padding: 30px; 
   background-color: #ffffff;
   width: 100%;
-  max-width: 600px; /* Augmenté */
-  min-width: 300px; /* Pour éviter un écrasement sur petits écrans */
+  max-width: 600px; 
+  min-width: 300px; 
   margin: auto;
   display: flex;
   flex-direction: column;
-  border-radius: 10px; /* Arrondi plus doux */
+  border-radius: 10px; 
   box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
 }
 
@@ -109,12 +128,12 @@ label {
 
 textarea {
   resize: vertical;
-  min-height: 150px; /* Augmenté pour plus de confort */
+  min-height: 150px; 
 }
 
 input[type="text"], textarea {
-  padding: 14px; /* Un peu plus de padding pour l'ergonomie */
-  font-size: 16px; /* Augmenter la taille du texte */
+  padding: 14px; 
+  font-size: 16px; 
 }
 
 input[type="text"]:focus,
@@ -123,7 +142,7 @@ textarea:focus {
 }
 
 .submit-btn {
-  padding: 12px 24px; /* Increased padding */
+  padding: 12px 24px; 
   background-color: #007bff;
   color: #ffffff;
   border: none;

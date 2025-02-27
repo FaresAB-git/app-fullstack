@@ -22,12 +22,16 @@ export const getTask = async (projectId) => {
 
 
 
-export const createTask = async (title, description, project) => {
+export const createTask = async (title, description, responsable, project) => {
 
 const token = localStorage.getItem('token');
 const userId =  localStorage.getItem('userId');
-console.log(userId);
 console.log(title);
+console.log(description);
+console.log(responsable);
+console.log(project);
+console.log(userId);
+
 
 const response = await fetch('http://localhost:3000/api/tasks/', {
     method: 'POST',
@@ -39,7 +43,8 @@ const response = await fetch('http://localhost:3000/api/tasks/', {
       "title": title,
       "description": description,
       "author": userId,
-      "project": project
+      "project": project,
+      "responsable" : responsable
   }
   )
 
@@ -72,7 +77,6 @@ export const updateStatusTask = async (status, taskId) => {
       },
       body:JSON.stringify({
         "status": status,
-        "editer": userId,
     }
     )
   
@@ -87,28 +91,29 @@ export const updateStatusTask = async (status, taskId) => {
   return data;
   };
 
-  export const updateTask = async (title, description, taskId) => {
+export const updateTask = async (title, description, responsable, taskId) => {
 
-    const token = localStorage.getItem('token');
-    const userId =  localStorage.getItem('userId');
-    console.log(userId);
-    console.log(taskId);
-   
-    
-    const response = await fetch('http://localhost:3000/api/tasks/' + taskId, {
-        method: 'PUT',
-        headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        },
-        body:JSON.stringify({
-          "editer": userId,
-          "title": title,
-          "description": description,
-      }
-      )
-    
-    });
+  const token = localStorage.getItem('token');
+
+  console.log("taskId"+ taskId);
+  console.log("titre:" + title);
+  console.log("description:" + description);
+  console.log("responsable:" + responsable);
+  
+  const response = await fetch('http://localhost:3000/api/tasks/' + taskId, {
+      method: 'PUT',
+      headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      },
+      body:JSON.stringify({
+        "title": title,
+        "description": description,
+        "responsable": responsable
+    }
+    )
+  
+  });
     
     const data = await response.json();
     
@@ -117,7 +122,7 @@ export const updateStatusTask = async (status, taskId) => {
     }
     
     return data;
-    };
+};
 
 export const deleteTask = async (taskId) => {
 
