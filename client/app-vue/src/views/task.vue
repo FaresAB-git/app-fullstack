@@ -110,7 +110,7 @@ async function updateTaskStatus(newStatus) {
         <div class="task" v-for="task in tasksRequested" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
           <h3>{{ task.title }}</h3>
           <p>{{ task.description }}</p>
-          <p>responsable: {{ task.responsableUsername }}</p> 
+          <p>Responsable: {{ task.responsableUsername }}</p> 
           <div class="task-buttons">
             <button @click="editTask(task)" class="edit-btn">Edit</button>
             <button @click="handleDelete(task._id)" class="del-btn">Delete</button>
@@ -123,7 +123,7 @@ async function updateTaskStatus(newStatus) {
         <div class="task" v-for="task in tasksInProgress" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
           <h3>{{ task.title }}</h3>
           <p>{{ task.description }}</p>
-          <p>responsable: {{ task.responsableUsername }}</p> 
+          <p>Responsable: {{ task.responsableUsername }}</p> 
           <div class="task-buttons">
             <button @click="editTask(task)" class="edit-btn">Edit</button>
             <button @click="handleDelete(task._id)" class="del-btn">Delete</button>
@@ -136,7 +136,7 @@ async function updateTaskStatus(newStatus) {
         <div class="task" v-for="task in tasksDone" :key="task.title" :draggable="true" @dragstart="startDrag(task)">
           <h3>{{ task.title }}</h3>
           <p>{{ task.description }}</p>
-          <p>responsable: {{  task.responsableUsername }}</p> 
+          <p>Responsable: {{  task.responsableUsername }}</p> 
           <div class="task-buttons">
             <button @click="editTask(task)" class="edit-btn">Edit</button>
             <button @click="handleDelete(task._id)" class="del-btn">Delete</button>

@@ -1,5 +1,5 @@
 <script setup>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { computed } from 'vue';
 
 function logout() {
@@ -8,16 +8,20 @@ function logout() {
 }
 
 const route = useRoute();
+const router = useRouter();
 
 const showLogoutButton = computed(() => {
-    console.log(route.name);
     return route.name !== 'login' && route.name !== 'register';
 });
+
+const goToHome = () => {
+    router.push('/');
+};
 </script>
 
 <template>
     <div id="headerContainer">
-        <h1 id="title">Project Manager</h1>
+        <h1 id="title" @click="goToHome">Project Manager</h1>
         <button v-if="showLogoutButton" class="logout" @click="logout">Logout</button>
     </div>
 </template>
@@ -37,6 +41,7 @@ const showLogoutButton = computed(() => {
     color: #ffffff;
     font-size: 24px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .logout {
