@@ -6,7 +6,7 @@ const TaskSchema = Joi.object({
     description: Joi.string().optional(),
     dateCreation: Joi.date().optional(),
     author: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).required(),
-    editer: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).optional(),
+    responsable: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).optional(),
     dateModification: Joi.date().optional(),
     project: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).optional(),
     status: Joi.string().optional()

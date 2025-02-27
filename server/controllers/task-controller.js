@@ -58,7 +58,7 @@ const createTask = async (req, res) => {
 // Update an existing task
 const updateTask = async (req, res) => {
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['title', 'description', 'status', 'editer', 'dateModification'];
+    const allowedUpdates = ['title', 'description', 'status', 'responsable', 'dateModification'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
     if (!isValidOperation) {
@@ -71,16 +71,16 @@ const updateTask = async (req, res) => {
             return res.status(404).send(error);
         }
 
-        if (!req.body.editer) {
-            return res.status(400).send({ error: 'Editer not found' });
+        if (!req.body.responsable) {
+            return res.status(400).send({ error: 'responsable not found' });
         }
 
-        //Search if the editer exists
+        //Search if the responsable exists
         let user;
-        if(req.body.editer){
-            user = await User.findById(req.body.editer);
+        if(req.body.responsable){
+            user = await User.findById(req.body.responsable);
             if (!user) {
-                return res.status(404).send({ error: 'Editer not found' });
+                return res.status(404).send({ error: 'responsable not found' });
             }
         }
         
