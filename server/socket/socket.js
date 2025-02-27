@@ -67,11 +67,22 @@ function setupSocket(server) {
                 // Enregistrer le message dans MongoDB
                 const chatMessage = new ChatMessage({ user: userId,project: projectId, message, timestamp: new Date() });
                 await chatMessage.save();
-
                 // Envoyer le message aux membres du projet
-                io.to(projectId).emit("receiveMessage", { username, message, timestamp: chatMessage.timestamp });
+                //send the message with the same format as the on sent in the history
+                const msg = await chatMessage.populate("user", "username");
+                io.to(projectId).emit("receiveMessage",  msg );
             } catch (error) {
                 console.error("Erreur d'envoi de message :", error);
+            }
+        });
+
+        socket.on("getMessages", async (projectId) => {
+            console.log("Demande de récupération des messages pour le projet :", projectId);
+            try {
+                const messages = await ChatMessage.find({ project: projectId }).populate("user", "username");
+                socket.emit("receiveMessages", messages);
+            } catch (error) {
+                console.error("Erreur de récupération des messages :", error);
             }
         });
 
