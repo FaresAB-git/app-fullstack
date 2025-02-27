@@ -1,4 +1,4 @@
-<script setup> 
+<script setup>
 function logout() {
     localStorage.removeItem('token');
     window.location.reload();
@@ -7,31 +7,39 @@ function logout() {
 
 <template>
     <div id="headerContainer">
-        <h1 id="title"> Project Manager </h1>
-        <button @click="logout" class="logout">logout</button>
+        <h1 id="title">Project Manager</h1>
+        <button @click="logout" class="logout">Logout</button>
     </div>
-
 </template>
 
 <style scoped>
+#headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #007bff;
+    padding: 16px 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: #ffffff;
+}
 
-    #headerContainer {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: lightgray;
-        padding: 16px;
-        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    }
+#title {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+}
 
-    #title {
-        color: #333;
-    }
+.logout {
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
 
-    .logout{
-        position: absolute;
-        top:50px;
-        right: 50px;
-    }
-
+.logout:hover {
+    background-color: #c82333;
+}
 </style>

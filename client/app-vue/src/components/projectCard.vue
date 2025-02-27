@@ -34,9 +34,9 @@ const emit = defineEmits(["editProject", "deleteProject"]); // Émission d'un é
   <div class="card">
     <router-link :to="{ name: 'task', params: { projectId: projectProps._id } }" class="link">
       <h2>{{ projectProps.title }}</h2>
-      <p><strong>Créateur :</strong> {{ ownerName }}</p>
+      <p><strong>Owner :</strong> {{ ownerName }}</p>
       <p><strong>Description :</strong> {{ projectProps.description }}</p>
-      <p><strong>Date de création :</strong> {{ projectProps.dateCreation }}</p>
+      <p><strong>Date of Creation :</strong> {{ projectProps.dateCreation }}</p>
     </router-link>
     <div class="button-group">
       <button @click="$emit('editProject', projectProps)" class="edit-btn" v-if="isOwner">Edit</button>

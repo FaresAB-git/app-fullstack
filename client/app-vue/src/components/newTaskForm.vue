@@ -75,7 +75,7 @@ const submitTask = async () => {
         <textarea v-model="description" id="description" name="description" required></textarea>
       </div>
       <div class="form-group">
-        <label for="description">responsable:</label>
+        <label for="description">Responsable:</label>
         <select v-model="responsable" id="responsable" name="responsable" value= required>
           <option v-for="member in projectMembers" :key="member._id" :value="member._id"> {{ member.username }}</option>
         </select>
