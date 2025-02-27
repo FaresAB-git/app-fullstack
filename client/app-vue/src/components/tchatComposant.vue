@@ -14,13 +14,14 @@ const message = ref("");
 const userId= localStorage.getItem("userId");
 const messagesEndRef = ref(null);
 
-const scrollToBottom = () => {
+//permet d'afficher les derniers message
+const scrollToBottom = () => {   
     nextTick(() => {
         messagesEndRef.value?.scrollIntoView({ behavior: 'smooth' });
     });
 };
 
-
+//on rejoint la room du chat projet
 socket.on("connect", () => {
     socket.emit("joinProject", route.params.projectId);
     console.log("Connected to server");

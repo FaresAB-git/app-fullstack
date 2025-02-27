@@ -11,6 +11,7 @@ const successMessage = ref('');
 const title = ref('')
 const description = ref('')
 
+//regarde si il le props est vide, si le props n'est pas null, les champs se remplisse avec le titre et la description
 watch(() => props.projectToEdit, (newProject) => {
   if (newProject) {
     title.value = newProject.title;

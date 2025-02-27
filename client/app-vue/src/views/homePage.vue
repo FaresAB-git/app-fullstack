@@ -15,10 +15,10 @@ const router = useRouter();
 
 onMounted(async () => {
   try {
-    userData.value = await getUser();
+    userData.value = await getUser();  //fetch pour recuperer les info de l'utilisateur
     console.log(userData.value);
     console.log(userData.value._id);
-    localStorage.setItem("userId", userData.value._id);
+    localStorage.setItem("userId", userData.value._id);  //besoin du user id dans certain fetch pour recuperer les projet de l'utilisateur ou autre
   } catch (error) {
     console.error(error);
     if (error.message === "Token is not valid") {
@@ -28,15 +28,17 @@ onMounted(async () => {
     }
   }
 
-  userProject.value = await getProjectByUser();
+  userProject.value = await getProjectByUser(); //recupecation des projet du user 
   console.log(userProject.value);
 });
 
-function toggleForm() {
+//toggle le formulaire de creation de projet
+function toggleForm() {           
   showForm.value = !showForm.value;
 }
 
-function editProject(project) {
+//toggle le formulaire pour edit le projet (meme formulaire mais avec le projet en props)
+function editProject(project) {     
   projectToEdit.value = project; // Stocke le projet à éditer
   showForm.value = true; // Affiche le formulaire
 }

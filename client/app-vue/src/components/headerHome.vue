@@ -1,7 +1,7 @@
 <script setup>
 function logout() {
-    localStorage.removeItem('token');
-    window.location.reload();
+    localStorage.removeItem('token'); //supression du token
+    window.location.reload(); //si la page est reloead et qu il n'y a pas de token on est redirigé sur login
 }
 </script>
 

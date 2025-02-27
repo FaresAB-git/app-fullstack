@@ -14,8 +14,8 @@ const login = async () => {
   successMessage.value = '';
 
   try {
-    const data = await loginUser(email.value, password.value);
-    localStorage.setItem('token', data.token)
+    const data = await loginUser(email.value, password.value); //fetch login
+    localStorage.setItem('token', data.token)   //token dans le local storage, pour le passer en header dans tout nos autre fetch
     successMessage.value = 'Connexion réussie !';
     router.push('/');
   } catch (error) {
