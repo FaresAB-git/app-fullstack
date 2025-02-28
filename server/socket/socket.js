@@ -1,7 +1,7 @@
 const { Server } = require("socket.io");
-const { ChatMessage } = require("../models/ChatMessage");
+const { ChatMessage } = require("../models/ChatMessage.js");
 const { User } = require("../models/User");
-const { ProjectUser } = require("../models/ProjectUser");
+const { ProjectUser } = require("../models/ProjectUser.js");
 const jwt = require("jsonwebtoken");
 
 function setupSocket(server) {

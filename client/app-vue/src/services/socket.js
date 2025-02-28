@@ -1,7 +1,7 @@
 const io = require("socket.io-client");
 // Récupérer le token JWT (exemple)
 const token = localStorage.getItem("token");
-const socket = io("http://localhost:3000", {
+const socket = io(process.env.API_URI, {
     auth: { token }, // On envoie le token ici
 });
 

@@ -1,9 +1,11 @@
+require('dotenv').config();
+
 //à faire
 export const getTask = async (projectId) => {
 
   const token = localStorage.getItem('token');
 
-  const response = await fetch('http://localhost:3000/api/tasks/project/' + projectId, {
+  const response = await fetch(process.env.API_URI+'/api/tasks/project/' + projectId, {
       method: 'GET',
       headers: {
       'Authorization': `Bearer ${token}`,
@@ -33,7 +35,7 @@ console.log(project);
 console.log(userId);
 
 
-const response = await fetch('http://localhost:3000/api/tasks/', {
+const response = await fetch(process.env.API_URI+'/api/tasks/', {
     method: 'POST',
     headers: {
     'Authorization': `Bearer ${token}`,
@@ -69,7 +71,7 @@ export const updateStatusTask = async (status, taskId) => {
   console.log(taskId);
  
   
-  const response = await fetch('http://localhost:3000/api/tasks/' + taskId, {
+  const response = await fetch(process.env.API_URI+'/api/tasks/' + taskId, {
       method: 'PUT',
       headers: {
       'Authorization': `Bearer ${token}`,
@@ -100,7 +102,7 @@ export const updateTask = async (title, description, responsable, taskId) => {
   console.log("description:" + description);
   console.log("responsable:" + responsable);
   
-  const response = await fetch('http://localhost:3000/api/tasks/' + taskId, {
+  const response = await fetch(process.env.API_URI+'/api/tasks/' + taskId, {
       method: 'PUT',
       headers: {
       'Authorization': `Bearer ${token}`,
@@ -128,7 +130,7 @@ export const deleteTask = async (taskId) => {
 
   const token = localStorage.getItem('token');
   console.log(taskId);
-  const response = await fetch('http://localhost:3000/api/tasks/' + taskId, {
+  const response = await fetch(process.env.API_URI+'/api/tasks/' + taskId, {
       method: 'DELETE',
       headers: {
       'Authorization': `Bearer ${token}`,
