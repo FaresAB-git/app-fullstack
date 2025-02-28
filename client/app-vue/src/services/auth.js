@@ -1,7 +1,7 @@
 // src/services/authService.js
 
 export const loginUser = async (email, password) => {
-    const response = await fetch(process.env.API_URI+'/api/user/login', {
+    const response = await fetch(import.meta.env.VITE_API_URI+'/api/user/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ export const loginUser = async (email, password) => {
 
 
 export const registerUser = async (username, email, password) => {
-  const response = await fetch(process.env.API_URI+'/api/user/register', {
+  const response = await fetch(import.meta.env.VITE_API_URI+'/api/user/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export const registerUser = async (username, email, password) => {
 export const getUser = async () => {
   
   const token = localStorage.getItem('token');
-  const response = await fetch(process.env.API_URI+'/api/user/me', {
+  const response = await fetch(import.meta.env.VITE_API_URI+'/api/user/me', {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -71,7 +71,7 @@ export const getUser = async () => {
 export const getUserById = async (userId) => {
   
   const token = localStorage.getItem('token');
-  const response = await fetch(process.env.API_URI+'/api/user/' + userId, {
+  const response = await fetch(import.meta.env.VITE_API_URI+'/api/user/' + userId, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -92,7 +92,7 @@ export const getUserById = async (userId) => {
 export const getAllUsers = async () => {
   
   const token = localStorage.getItem('token');
-  const response = await fetch(process.env.API_URI+'/api/user/', {
+  const response = await fetch(import.meta.env.VITE_API_URI+'/api/user/', {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`,
