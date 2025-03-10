@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { getAllUsers } from '@/services/auth';
-import { addUserToProject, getProjectUsers, deleteUserFromProject} from '@/services/project';
+import { addUserToProject, getProjectUsers, deleteUserFromProject, getProjectById } from '@/services/project';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
@@ -10,23 +10,25 @@ const projectId = route.params.projectId;
 const users = ref([]);
 const selectedUser = ref(null);
 const projectMembers = ref([]);
+const project = ref(null);
 
 onMounted(async () => {
-  users.value = await getAllUsers();  //recuperation de la liste de tout les utilisateurs pour pouvoir les ajouter
-  projectMembers.value = await getProjectUsers(projectId);  //recuperation des membre du projet 
-
+  users.value = await getAllUsers();  // Récupération de la liste de tous les utilisateurs
+  projectMembers.value = await getProjectUsers(projectId);  // Récupération des membres du projet
+  project.value = await getProjectById(projectId);  // Récupération des détails du projet, necessaire pour recuperer l'id de l'owner
+  console.log(project.value);
 });
 
 async function handleAddMember() {
   if (selectedUser.value) {
     await addUserToProject(projectId, selectedUser.value);
-    projectMembers.value = await getProjectUsers(projectId); // Met à jour la liste des membres
+    projectMembers.value = await getProjectUsers(projectId); // Mise à jour de la liste des membres
   }
 }
 
 async function deleteMember(memberId) {
   await deleteUserFromProject(projectId, memberId);
-  projectMembers.value = await getProjectUsers(projectId); // Met à jour la liste des membres
+  projectMembers.value = await getProjectUsers(projectId); // Mise à jour de la liste des membres
 }
 </script>
 
@@ -46,13 +48,14 @@ async function deleteMember(memberId) {
         <ul>
           <li v-for="member in projectMembers" :key="member._id">
             {{ member.username }}
-            <button @click="deleteMember(member._id)" class="delete-btn">Delete</button>
+            <button v-if="member._id !== project?.owner" @click="deleteMember(member._id)" class="delete-btn">Delete</button>
           </li>
         </ul>
       </div>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .memberformContainer {

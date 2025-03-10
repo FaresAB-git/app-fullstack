@@ -19,6 +19,28 @@ export const getProjectByUser = async () => {
     return data;
   };
 
+
+  export const getProjectById = async (projectId) => {
+  
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    const response = await fetch(import.meta.env.VITE_API_URI+'/api/project/'+ projectId, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+  
+    const data = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(data.message || 'Erreur de connexion');
+    }
+  
+    return data;
+  };
+
  
 
 export const createProject = async (title, description) => {
