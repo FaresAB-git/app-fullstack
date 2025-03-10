@@ -24,6 +24,9 @@ watch(() => props.projectToEdit, (newProject) => {
 { immediate: true }
 );
 
+const emit = defineEmits(['projectUpdated']); //evennement pour recharger la page après la création ou la modification du projet
+
+
 const submitProject = async () => {
   errorMessage.value = '';
   successMessage.value = '';
@@ -35,14 +38,14 @@ const submitProject = async () => {
       successMessage.value = 'Projet mis à jour avec succès';
     } else {
       // Création d'un nouveau projet
-      await createProject(title.value, description.value);
+      const newProject = await createProject(title.value, description.value);
       successMessage.value = 'Projet créé avec succès';
+      emit('projectUpdated', newProject); // Émettre l'événement avec le nouveau projet
     }
   } catch (error) {
     console.error(error);
     errorMessage.value = error.message;
   }
-  window.location.reload();
 };
 </script>
 

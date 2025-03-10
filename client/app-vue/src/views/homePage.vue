@@ -43,10 +43,19 @@ function editProject(project) {
   showForm.value = true; // Affiche le formulaire
 }
 
-function handleDelete(projectId) {
-  console.log(projectId);
-  deleteProject(projectId);
-  window.location.reload();
+//suppression du projet
+async function handleDelete(projectId) {
+  try {
+    await deleteProject(projectId);
+    userProject.value = userProject.value.filter(p => p._id !== projectId); // Supprime le projet localement
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function refreshProjects() {
+  userProject.value = await getProjectByUser(); // Recharge la liste des projets
+  showForm.value = false; // Ferme le formulaire
 }
 </script>
 
@@ -59,7 +68,7 @@ function handleDelete(projectId) {
     </div>
 
     <div v-if="showForm" class="overlay" @click="toggleForm"></div>
-    <newProjectForm v-if="showForm" class="newProjectForm" :projectToEdit="projectToEdit"/>
+    <newProjectForm v-if="showForm" class="newProjectForm" :projectToEdit="projectToEdit" @projectUpdated="refreshProjects"/>
   </div>
 </template>
 
