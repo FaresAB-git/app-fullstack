@@ -20,7 +20,7 @@ const TaskSchema = new Schema({
         ref: 'User', 
         required: true
     },
-    editer: {
+    responsable: {
         type: Schema.Types.ObjectId,
         ref: 'User', 
         required: false

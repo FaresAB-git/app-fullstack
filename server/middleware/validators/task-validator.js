@@ -4,9 +4,9 @@ const Task = require('../../models/Task');
 const TaskSchema = Joi.object({
     title: Joi.string().required(),
     description: Joi.string().optional(),
-    dateCreation: Joi.date().required(),
+    dateCreation: Joi.date().optional(),
     author: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).required(),
-    editer: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).optional(),
+    responsable: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).optional(),
     dateModification: Joi.date().optional(),
     project: Joi.string().pattern(/^[0-9a-fA-F]{24}$/).optional(),
     status: Joi.string().optional()

@@ -3,7 +3,7 @@ export const getTask = async (projectId) => {
 
   const token = localStorage.getItem('token');
 
-  const response = await fetch('http://localhost:3000/api/tasks/project/' + projectId, {
+  const response = await fetch(import.meta.env.VITE_API_URI+'/api/tasks/project/' + projectId, {
       method: 'GET',
       headers: {
       'Authorization': `Bearer ${token}`,
@@ -22,14 +22,18 @@ export const getTask = async (projectId) => {
 
 
 
-export const createTask = async (title, description, project) => {
+export const createTask = async (title, description, responsable, project) => {
 
 const token = localStorage.getItem('token');
 const userId =  localStorage.getItem('userId');
-console.log(userId);
 console.log(title);
+console.log(description);
+console.log(responsable);
+console.log(project);
+console.log(userId);
 
-const response = await fetch('http://localhost:3000/api/tasks/', {
+
+const response = await fetch(import.meta.env.VITE_API_URI+'/api/tasks/', {
     method: 'POST',
     headers: {
     'Authorization': `Bearer ${token}`,
@@ -38,9 +42,9 @@ const response = await fetch('http://localhost:3000/api/tasks/', {
     body:JSON.stringify({
       "title": title,
       "description": description,
-      "dateCreation": "2025-02-21T12:00:00.000Z",
       "author": userId,
-      "project": project
+      "project": project,
+      "responsable" : responsable
   }
   )
 
@@ -56,14 +60,16 @@ return data;
 };
 
 
-export const updateTask = async (title, description, project, status, taskId) => {
+export const updateStatusTask = async (status, taskId) => {
 
   const token = localStorage.getItem('token');
   const userId =  localStorage.getItem('userId');
   console.log(userId);
-  console.log(title);
+  console.log(status);
+  console.log(taskId);
+ 
   
-  const response = await fetch('http://localhost:3000/api/tasks/' + taskId, {
+  const response = await fetch(import.meta.env.VITE_API_URI+'/api/tasks/' + taskId, {
       method: 'PUT',
       headers: {
       'Authorization': `Bearer ${token}`,
@@ -71,7 +77,6 @@ export const updateTask = async (title, description, project, status, taskId) =>
       },
       body:JSON.stringify({
         "status": status,
-        
     }
     )
   
@@ -85,3 +90,57 @@ export const updateTask = async (title, description, project, status, taskId) =>
   
   return data;
   };
+
+export const updateTask = async (title, description, responsable, taskId) => {
+
+  const token = localStorage.getItem('token');
+
+  console.log("taskId"+ taskId);
+  console.log("titre:" + title);
+  console.log("description:" + description);
+  console.log("responsable:" + responsable);
+  
+  const response = await fetch(import.meta.env.VITE_API_URI+'/api/tasks/' + taskId, {
+      method: 'PUT',
+      headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      },
+      body:JSON.stringify({
+        "title": title,
+        "description": description,
+        "responsable": responsable
+    }
+    )
+  
+  });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+        throw new Error(data.message || 'Erreur de connexion');
+    }
+    
+    return data;
+};
+
+export const deleteTask = async (taskId) => {
+
+  const token = localStorage.getItem('token');
+  console.log(taskId);
+  const response = await fetch(import.meta.env.VITE_API_URI+'/api/tasks/' + taskId, {
+      method: 'DELETE',
+      headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      }
+  });
+  
+  const data = await response.json();
+  
+  if (!response.ok) {
+      throw new Error(data.message || 'Erreur de connexion');
+  }
+  
+  return data;
+};

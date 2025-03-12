@@ -1,0 +1,8 @@
+{
+    "name": "app-fullstack",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+      "install:all": "npm install --prefix ./client/app-vue && npm install --prefix ./server && npm run dev --prefix ./server"
+    }
+  }

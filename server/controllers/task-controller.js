@@ -1,4 +1,5 @@
 const {Task} = require('../models/Task');
+const {User} = require('../models/User');
 
 // Get task by Project ID
 const getAllTasksByProjectId = async (req, res) => {
@@ -39,9 +40,12 @@ const createTask = async (req, res) => {
     //Check if the project already exists (same title and project)
     const project = await Task.findOne({ title: req.body.title, project: req.body.project });
     if (project) {
-        return res.status(400).send({ error: 'Project already exists' });
+        return res.status(400).send({ error: 'Task already exists' });
     }
     try {
+        if (!req.body.dateCreation) {
+            req.body.dateCreation = new Date();
+        }
         const task = new Task(req.body);
         task.status= 'taskRequested'
         await task.save();
@@ -54,7 +58,7 @@ const createTask = async (req, res) => {
 // Update an existing task
 const updateTask = async (req, res) => {
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['title', 'description', 'status', 'editer', 'dateModification'];
+    const allowedUpdates = ['title', 'description', 'status', 'responsable', 'dateModification'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
     if (!isValidOperation) {
@@ -62,17 +66,11 @@ const updateTask = async (req, res) => {
     }
 
     try {
-        const task = await Task.findById(req.params.id);
+        const task = await Task.findById(req.params.taskId);
         if (!task) {
-            return res.status(404).send();
+            return res.status(404).send(error);
         }
-        //Search if the editer exists
-        if(req.body.editer){
-            const user = await User.findById(req.body.editer);
-        }
-        if (!user) {
-            return res.status(404).send({ error: 'Editer not found' });
-        }
+
         req.body.dateModification = new Date();
 
         updates.forEach((update) => task[update] = req.body[update]);
@@ -86,7 +84,7 @@ const updateTask = async (req, res) => {
 // Delete a task
 const deleteTask = async (req, res) => {
     try {
-        const task = await Task.findByIdAndDelete(req.params.id);
+        const task = await Task.findByIdAndDelete(req.params.taskId);
 
         if (!task) {
             return res.status(404).send();
